@@ -1,7 +1,7 @@
 
 import { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import LandingIntro from './LandingIntro'
+import LandingIntro from '../shared/LandingIntro'
 
 const loading = false
 function Login() {
