@@ -28,14 +28,14 @@ function Login() {
                                     <label htmlFor='email' className="label">
                                         <span className={"label-text text-base-content "}>Email</span>
                                     </label>
-                                    <input name='email' id='email' placeholder='' className="input  input-bordered w-full " />
+                                    <input required name='email' id='email' placeholder='' className="input  input-bordered w-full " />
                                 </div>
 
                                 <div className={`form-control w-full mt-4`}>
                                     <label htmlFor='password' className="label">
                                         <span className={"label-text text-base-content "}>Password</span>
                                     </label>
-                                    <input name='password' id='password' placeholder='' className="input  input-bordered w-full " />
+                                    <input required name='password' id='password' placeholder='' className="input  input-bordered w-full " />
                                 </div>
 
                             </div>

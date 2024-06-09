@@ -28,7 +28,7 @@ function Register() {
                                     <label htmlFor='name' className="label">
                                         <span className={"label-text text-base-content "}>Name</span>
                                     </label>
-                                    <input name='name' id='name' placeholder='' className="input  input-bordered w-full " />
+                                    <input name='name'required id='name' placeholder='' className="input  input-bordered w-full " />
                                 </div>
 
                                 <div className={`form-control w-full mt-4`}>
@@ -43,14 +43,14 @@ function Register() {
                                     <label htmlFor='email' className="label">
                                         <span className={"label-text text-base-content "}>Email</span>
                                     </label>
-                                    <input name='email' id='email' placeholder='' className="input  input-bordered w-full " />
+                                    <input name='email' required id='email' placeholder='' className="input  input-bordered w-full " />
                                 </div>
 
                                 <div className={`form-control w-full mt-4`}>
                                     <label htmlFor='password' className="label">
                                         <span className={"label-text text-base-content"}>Password</span>
                                     </label>
-                                    <input name='password' id='password' placeholder='' className="input  input-bordered w-full " />
+                                    <input name='password' required id='password' placeholder='' className="input  input-bordered w-full " />
                                 </div>
 
                             </div>
