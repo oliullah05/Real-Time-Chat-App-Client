@@ -34,11 +34,11 @@ function Login() {
             }
         }
         catch (err) {
-            // console.log(err,788888);
+            console.log(err);
         }
 
     }
-    // console.log(error);
+   
 
     return (
         <div className="min-h-screen bg-base-200 flex items-center">
