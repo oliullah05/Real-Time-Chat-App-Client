@@ -5,14 +5,11 @@ import LandingIntro from '../shared/LandingIntro'
 import successIcon from "../../assets/icon/mail-success.svg"
 
 function ForgotPassword() {
-
-
-
-    const [loading, setLoading] = useState(false)
+    const [loading] = useState(false)
     const [linkSent, setlinkSent] = useState(false)
 
 
-    console.log({ linkSent });
+  
     const sendResetLink = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setlinkSent(true)
@@ -77,7 +74,7 @@ function ForgotPassword() {
                                         <input required name='email' id='email' placeholder='' className="input  input-bordered w-full " />
                                     </div>
 
-                                    {/* <ErrorText styleClass="mt-12">{errorMessage}</ErrorText> */}
+                                    <p className={`text-center  text-error mt-8`}>{""}</p>
                                     <button type="submit" className={"btn mt-4 w-full btn-primary" + (loading ? " loading" : "")}>Send Reset Link</button>
 
                                     <div className='text-center mt-4'>Don't have an account yet? <Link to="/register"><button className="  inline-block  hover:text-primary hover:underline hover:cursor-pointer transition duration-200">Register</button></Link></div>
