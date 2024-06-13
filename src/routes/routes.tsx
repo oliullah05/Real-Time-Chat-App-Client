@@ -2,20 +2,22 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 
-import Main from "../layout/Main";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import { Suspense, lazy } from "react";
 import Loading from "../component/shared/Loading";
+import Home from "../layout/Home";
 const Login = lazy(() => import("../component/login/Login"))
 const Register = lazy(() => import("../component/register/register"))
 const ForgotPassword = lazy(() => import("../component/forgotPassword/ForgotPassword"))
 
 
+
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <PrivateRoute><Main></Main></PrivateRoute>
+    element: <PrivateRoute><Home></Home></PrivateRoute>
   },
   {
     path: "/login",
