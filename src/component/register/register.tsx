@@ -1,14 +1,79 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { ChangeEvent, FormEvent, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import LandingIntro from '../shared/LandingIntro'
+import { useRegisterMutation } from '../../redux/features/auth/authApi'
+import { toast } from 'sonner'
 
-const loading = false
+
 function Register() {
 
-    const registerUser = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+    const [register, { isLoading }] = useRegisterMutation()
+    const [error, setError] = useState("")
+    const [profilePhoto, setProfilePhoto] = useState("")
+    const [isImgUploadLoading, setIsImageUploadLoading] = useState(false)
+    const navigate = useNavigate()
+    const handleProfilePhotoUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files;
+        if (!file || file.length === 0) return;
+        setIsImageUploadLoading(true)
+        const form = new FormData();
+        form.set("image", file[0]);
 
+        try {
+            const res = await fetch(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`, {
+                method: "POST",
+                body: form
+            });
+
+            if (!res.ok) {
+                setIsImageUploadLoading(false)
+                toast.error('Image upload failed');
+            }
+
+            const data = await res.json();
+            if (data?.data?.display_url) {
+                toast.success("Image upload successfully")
+                setProfilePhoto(data?.data?.display_url);
+            }
+            setIsImageUploadLoading(false)
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
+    };
+
+
+
+
+    const registerUser = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        setError("")
+        const form = (e.target) as HTMLFormElement;
+        const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+        const email = form.email.value;
+        const password = form.password.value;
+
+        if (password.length < 6) {
+            return setError("Password must be at least 6 characters long.")
+        }
+
+        const payload = { name, email, password, profilePhoto }
+        try {
+            const res: any = await register(payload)
+            if (res?.data?.success) {
+                toast.success(res.data.message)
+                navigate("/")
+            }
+            // console.log(res.error.data.success,88);
+            if (res?.error?.data?.success == false) {
+                // console.log(false);
+                setError(res.error.data.message)
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 
     return (
@@ -28,14 +93,14 @@ function Register() {
                                     <label htmlFor='name' className="label">
                                         <span className={"label-text text-base-content "}>Name</span>
                                     </label>
-                                    <input name='name'required id='name' placeholder='' className="input  input-bordered w-full " />
+                                    <input name='name' required id='name' placeholder='' className="input  input-bordered w-full " />
                                 </div>
 
                                 <div className={`form-control w-full mt-4`}>
                                     <label htmlFor='profilePhoto' className="label">
                                         <span className={"label-text text-base-content "}>Profile Photo</span>
                                     </label>
-                                    <input multiple={false} accept="image/*" name='profilePhoto' id='profilePhoto' type="file" className="file-input file-input-bordered w-full " />
+                                    {isImgUploadLoading ? <span className="loading loading-dots loading-lg"></span> : <input onChange={handleProfilePhotoUpload} multiple={false} accept="image/*" name='profilePhoto' id='profilePhoto' type="file" className="file-input file-input-bordered w-full " />}
                                 </div>
 
 
@@ -55,11 +120,11 @@ function Register() {
 
                             </div>
 
-                          
 
-                            <p className={`text-center  text-error mt-8`}>{""}</p>
 
-                            <button type="submit" className={"btn mt-2 w-full btn-primary" + (loading ? " loading" : "")}>Register</button>
+                            {error && <p className={`text-center  text-error mt-8`}>{error}</p>}
+
+                            <button disabled={isLoading || isImgUploadLoading} type="submit" className={"btn mt-2 w-full btn-primary"}>{isLoading || isImgUploadLoading ? "Loading..." : "Register"}</button>
 
                             <div className='text-center mt-4'>Alrady have an account? <Link to="/login"><span className="  inline-block  hover:text-primary hover:underline hover:cursor-pointer transition duration-200">Login</span></Link></div>
                         </form>

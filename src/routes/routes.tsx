@@ -1,32 +1,42 @@
 import {
   createBrowserRouter,
 } from "react-router-dom";
-import Login from "../component/login/Login";
+
 import Main from "../layout/Main";
-import Register from "../component/register/register";
-import ForgotPassword from "../component/forgotPassword/ForgotPassword";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
-
-
+import { Suspense, lazy } from "react";
+import Loading from "../component/shared/Loading";
+const Login = lazy(() => import("../component/login/Login"))
+const Register = lazy(() => import("../component/register/register"))
+const ForgotPassword = lazy(() => import("../component/forgotPassword/ForgotPassword"))
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element:<PrivateRoute><Main></Main></PrivateRoute>
+    element: <PrivateRoute><Main></Main></PrivateRoute>
   },
   {
     path: "/login",
-    element:<PublicRoute> <Login></Login></PublicRoute>
+    element: <PublicRoute>
+      <Suspense fallback={<Loading/>}>
+        <Login />
+      </Suspense></PublicRoute>
   },
   {
     path: "/register",
-    element: <Register></Register>
+    element:  <PublicRoute>
+    <Suspense fallback={<Loading/>}>
+      <Register />
+    </Suspense></PublicRoute>
   },
   {
     path: "/forgot-password",
-    element: <ForgotPassword></ForgotPassword>
+    element:  <PublicRoute>
+    <Suspense fallback={<Loading/>}>
+      <ForgotPassword />
+    </Suspense></PublicRoute>
   },
 ]);
 

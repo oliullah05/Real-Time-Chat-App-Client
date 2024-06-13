@@ -6,8 +6,8 @@ import LandingIntro from '../shared/LandingIntro'
 import { toast } from 'sonner'
 
 
-
 function Login() {
+
     const [login, { isLoading }] = useLoginMutation()
     const [error, setError] = useState("")
     const navigate = useNavigate();

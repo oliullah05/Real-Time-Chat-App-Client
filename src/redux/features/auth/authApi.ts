@@ -22,8 +22,22 @@ const authApi = baseApi.injectEndpoints({
                 }
             }
         }),
+        register: builder.mutation({
+            query: (payload: { email: string, name: string, password: string }) => ({
+                url: "/user/create-user",
+                method: "POST",
+                body: payload
+            }),
+            async onQueryStarted(_args, { queryFulfilled, dispatch }) {
+                const isQueryFullfield = await queryFulfilled;
+                if(isQueryFullfield){
+                    localStorage.setItem("auth", JSON.stringify(isQueryFullfield?.data?.data?.accessToken))
+                    dispatch(setUser({ user: isQueryFullfield?.data?.data?.user, token: isQueryFullfield?.data?.data?.accessToken }))
+                }
+            }
+        })
     })
 })
 
 
-export const { useLoginMutation } = authApi
+export const { useLoginMutation,useRegisterMutation } = authApi

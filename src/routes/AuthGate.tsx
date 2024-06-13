@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { useAppDispatch } from "../redux/hooks";
 import { jwtDecode } from "jwt-decode";
 import { logOut, setUser } from "../redux/features/auth/authSlice";
+import Loading from "../component/shared/Loading";
 
 
 const AuthGate = ({ children }: { children: ReactNode }) => {
@@ -14,7 +15,11 @@ const AuthGate = ({ children }: { children: ReactNode }) => {
             if (decoded?.id && decoded?.role) {
                 dispatch(setUser({ user: { id: decoded.id, role: decoded.role }, token:JSON.parse(token) }))
             }
+          
+        
             setLoading(false)
+       
+    
         }
 
         else {
@@ -24,7 +29,7 @@ const AuthGate = ({ children }: { children: ReactNode }) => {
     }, [dispatch])
 
     if (loading) {
-        return <div className="text-7xl bg-red-700 flex justify-center items-center">Loading.........</div>
+        return <Loading></Loading> 
     }
 
 
