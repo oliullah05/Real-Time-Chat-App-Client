@@ -12,7 +12,7 @@ const AuthGate = ({ children }: { children: ReactNode }) => {
         if (token) {
             const decoded: { id: string, role: string } = jwtDecode(token);
             if (decoded?.id && decoded?.role) {
-                dispatch(setUser({ user: { id: decoded.id, role: decoded.role }, token }))
+                dispatch(setUser({ user: { id: decoded.id, role: decoded.role }, token:JSON.parse(token) }))
             }
             setLoading(false)
         }

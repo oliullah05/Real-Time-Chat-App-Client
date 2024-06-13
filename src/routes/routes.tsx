@@ -6,6 +6,7 @@ import Main from "../layout/Main";
 import Register from "../component/register/register";
 import ForgotPassword from "../component/forgotPassword/ForgotPassword";
 import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
 
 
 
@@ -13,11 +14,11 @@ import PrivateRoute from "./PrivateRoute";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <PrivateRoute><Main></Main></PrivateRoute>
+    element:<PrivateRoute><Main></Main></PrivateRoute>
   },
   {
     path: "/login",
-    element: <Login></Login>
+    element:<PublicRoute> <Login></Login></PublicRoute>
   },
   {
     path: "/register",
