@@ -21,10 +21,7 @@ const Conversation = () => {
 
             {/* all conversations */}
 {/*   ${dummyConversationData.length>8?"overflow-y-scroll":""} */}
-            <section className={`bg-red-20 max-h-[70.5vh] overflow-y-auto
-              
-                `
-                }>
+            <section className={`bg-red-20 max-h-[70.5vh] overflow-y-auto custom-scrollbar` }>
                 {
                     dummyConversationData.slice(0, 9).map((data, index) =>  <div key={index} className="h-[5rem] bg-red-20 w-full flex justify-around items-center border-[0.5px] border-t-0 border-b-[#EBEBEB]">
 

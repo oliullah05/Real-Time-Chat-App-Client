@@ -1,8 +1,9 @@
+import MessageHeader from "./MessageHeader";
 
 const Message = () => {
     return (
-        <div className=' basis-[75%]'>
-            Messages
+        <div className='mt-10 px-8 basis-[75%]'>
+            <MessageHeader></MessageHeader>
         </div>
     );
 };

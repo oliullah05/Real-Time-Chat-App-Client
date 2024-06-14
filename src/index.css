@@ -3,7 +3,21 @@
 @tailwind utilities;
 
 * {
-    /* border: 1px solid red ; */
-    /* padding: 0px;  */
-    /* box-sizing: border-box; */
+/* border: 1px solid red; */
 }
+
+
+  /* .custom-scrollbar {
+    scrollbar-width: 5px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 100px;
+  }
+  .custom-scrollbar ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }  */
+
