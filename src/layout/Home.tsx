@@ -4,12 +4,11 @@ import Settings from "../component/Home/settings/Settings";
 
 const Home = () => {
     return (
-        <div className={`min-h-screen w-screen bg-[#EBEBEB] flex  `}>
+        <div className={`max-h-screen h-screen w-full bg-[#EBEBEB] flex  `}>
           <Settings>
           </Settings>
           <Conversation></Conversation>
           <Message></Message>
-            
         </div>
     );
 };
