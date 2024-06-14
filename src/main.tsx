@@ -9,13 +9,15 @@ import router from './routes/routes';
 import { Provider } from 'react-redux'
 import { store } from './redux/store';
 import { Toaster } from 'sonner';
-import AuthGate from './routes/AuthGate';
+import AuthPersist from './routes/AuthPersist';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
-  <AuthGate> <RouterProvider  router={router} /></AuthGate>
-    <Toaster />
+      <AuthPersist>
+        <RouterProvider router={router} />
+      </AuthPersist>
+      <Toaster />
     </Provider>
   </React.StrictMode>,
 )

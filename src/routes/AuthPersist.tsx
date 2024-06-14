@@ -5,7 +5,7 @@ import { logOut, setUser } from "../redux/features/auth/authSlice";
 import Loading from "../component/shared/Loading";
 
 
-const AuthGate = ({ children }: { children: ReactNode }) => {
+const AuthPersist = ({ children }: { children: ReactNode }) => {
     const [loading, setLoading] = useState(true)
     const dispatch = useAppDispatch()
     useEffect(() => {
@@ -38,4 +38,4 @@ const AuthGate = ({ children }: { children: ReactNode }) => {
 
 
 
-export default AuthGate
+export default AuthPersist
