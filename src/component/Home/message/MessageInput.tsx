@@ -20,8 +20,8 @@ const [url, setUrl] = useState('');
         if (files && files.length > 0) {
             const data = new FormData();
             data.append("file", files[0]);
-            data.append("upload_preset", "chat-app");
-            data.append("cloud_name", "dvmtzwxci");
+            data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+            data.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
     
             // Determine the resource type based on the file type
             const fileType = files[0].type;
@@ -36,7 +36,7 @@ const [url, setUrl] = useState('');
             }
     
             try {
-                const res = await fetch(`https://api.cloudinary.com/v1_1/dvmtzwxci/${resourceType}/upload`, {
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`, {
                     method: "POST",
                     body: data
                 });
@@ -59,7 +59,31 @@ const [url, setUrl] = useState('');
 console.log(url);
 
     const handleAudioUpload = async (audioFile: File) => {
-        console.log({audioFile});
+       if(audioFile){
+        const data = new FormData();
+            data.append("file", audioFile);
+            data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+            data.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
+    
+            // Determine the resource type based on the file type
+          
+            try {
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/raw/upload`, {
+                    method: "POST",
+                    body: data
+                });
+    
+                const cloudData = await res.json();
+                if (cloudData.url) {
+                    setUrl(cloudData.url);
+                    toast.success("Voice Upload Successfully");
+                } else {
+                    toast.error(cloudData.error.message);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+       }
        
     };
 
