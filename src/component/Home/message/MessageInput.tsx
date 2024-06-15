@@ -1,9 +1,11 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { AudioRecorder } from "react-audio-voice-recorder";
 import { BsFillSendFill } from "react-icons/bs";
 import { FaPaperclip } from "react-icons/fa6";
+import { toast } from "sonner";
 
 const MessageInput: React.FC = () => {
+const [url, setUrl] = useState('');
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleFileIconClick = () => {
@@ -12,13 +14,49 @@ const MessageInput: React.FC = () => {
         }
     };
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
+    
         if (files && files.length > 0) {
-            console.log("Files uploaded:", files[0]);
-           
+            const data = new FormData();
+            data.append("file", files[0]);
+            data.append("upload_preset", "chat-app");
+            data.append("cloud_name", "dvmtzwxci");
+    
+            // Determine the resource type based on the file type
+            const fileType = files[0].type;
+            let resourceType = 'auto'; // Default to auto, which lets Cloudinary decide
+    
+            if (fileType.startsWith('image/')) {
+                resourceType = 'image';
+            } else if (fileType.startsWith('video/')) {
+                resourceType = 'video';
+            } else {
+                resourceType = 'raw';
+            }
+    
+            try {
+                const res = await fetch(`https://api.cloudinary.com/v1_1/dvmtzwxci/${resourceType}/upload`, {
+                    method: "POST",
+                    body: data
+                });
+    
+                const cloudData = await res.json();
+                if (cloudData.url) {
+                    setUrl(cloudData.url);
+                    toast.success("File Upload Successfully");
+                } else {
+                    toast.error(cloudData.error.message);
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
+    
+
+
+console.log(url);
 
     const handleAudioUpload = async (audioFile: File) => {
         console.log({audioFile});
