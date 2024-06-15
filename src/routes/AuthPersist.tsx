@@ -11,14 +11,12 @@ const AuthPersist = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const token = localStorage.getItem("auth")
         if (token) {
-            const decoded: { id: string, role: string } = jwtDecode(token);
+            const decoded: { id: string, role: string,email:string } = jwtDecode(token);
             if (decoded?.id && decoded?.role) {
-                dispatch(setUser({ user: { id: decoded.id, role: decoded.role }, token:JSON.parse(token) }))
+                dispatch(setUser({ user: { id: decoded.id,email:decoded.email, role: decoded.role }, token:JSON.parse(token) }))
             }
           
-        
             setLoading(false)
-       
     
         }
 

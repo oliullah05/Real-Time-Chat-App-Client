@@ -17,7 +17,11 @@ const ForgotPassword = lazy(() => import("../component/forgotPassword/ForgotPass
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <PrivateRoute><Home></Home></PrivateRoute>
+    element: <PrivateRoute><Home></Home></PrivateRoute>,
+    children:[{
+      path:"/:id",
+     element:<PrivateRoute><Home></Home></PrivateRoute>
+    }]
   },
   {
     path: "/login",

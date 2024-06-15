@@ -12,6 +12,7 @@ const authApi = baseApi.injectEndpoints({
             async onQueryStarted(_args, { dispatch, queryFulfilled }) {
                 try {
                     const isQueryFullfield = await queryFulfilled;
+                    
                     if (isQueryFullfield) {
                         localStorage.setItem("auth", JSON.stringify(isQueryFullfield?.data?.data?.accessToken))
                         dispatch(setUser({ user: isQueryFullfield?.data?.data?.user, token: isQueryFullfield?.data?.data?.accessToken }))

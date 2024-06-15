@@ -6,9 +6,9 @@ const Message = () => {
         <div className='mt-10 px-8 basis-[75%]'>
             <MessageHeader></MessageHeader>
             <section className="min-h-[76.5vh] bg-blue-400 mt-4">
-fg
+                fg
             </section>
-<MessageInput></MessageInput>
+            <MessageInput></MessageInput>
 
         </div>
     );

@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <AuthPersist>
         <RouterProvider router={router} />
       </AuthPersist>
-      <Toaster />
+      <Toaster duration={2000}/>
     </Provider>
   </React.StrictMode>,
 )
