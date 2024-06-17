@@ -4,7 +4,8 @@ export const baseApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${import.meta.env.VITE_IMGBB_BASE_API}`,
         prepareHeaders: (headers) => {
-            headers.set("authorization",localStorage.getItem("auth") as string)
+           
+            headers.set("authorization",JSON.parse(localStorage.getItem("auth") as string) as string)
             return headers
         }
     }),
