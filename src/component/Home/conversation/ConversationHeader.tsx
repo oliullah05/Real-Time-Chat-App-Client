@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { HiUserGroup } from "react-icons/hi2";
+
 import CreateNewMessage from "./CreateNewMessage";
+import CreateNewGroup from "./CreateNewGroup";
 
 const ConversationHeader = () => {
 
@@ -18,7 +18,7 @@ const ConversationHeader = () => {
             <div className="flex gap-4">
 
                 <div className="tooltip" data-tip="New Group">
-                    <HiUserGroup className="w-12 h-12 bg-[#E6E6E6] px-3 py-2 rounded-md btn" />
+                    <CreateNewGroup></CreateNewGroup>
                 </div>
                 <div className="tooltip" data-tip="New Message">
                     <CreateNewMessage></CreateNewMessage>

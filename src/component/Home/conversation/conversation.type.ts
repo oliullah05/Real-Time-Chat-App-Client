@@ -27,7 +27,7 @@ interface User {
   }
 
   export type TUser = {
-    id: number;
+    id: string;
     profilePhoto: string;
     name: string;
     createdAt: string; 
