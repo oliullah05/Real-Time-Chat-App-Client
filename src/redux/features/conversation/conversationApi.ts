@@ -14,8 +14,25 @@ const conversationApi = baseApi.injectEndpoints({
                 method: "GET"
             })
         }),
+        createConversation: builder.mutation({
+            query: (payload:{ 
+                lastMessage: string,
+                isgroup?:boolean,
+                groupName?:string,
+                groupPhoto?:string,
+                participants:string,
+                conversationsUsers:{userId:string}[]
+            }) => {           
+        
+                return {
+                    url: `/conversation/create-conversation`,
+                    method: "POST",
+                    body: payload
+                }
+            }
+        }),
         updateConversationByParticipants: builder.mutation({
-            query: (payload:{data:{ lastMessage: string,groupName?:string,groupPhoto?:string,isGroup:boolean},participants:string}) => {           
+            query: (payload:{data:{ lastMessage: string,groupName?:string,groupPhoto?:string},participants:string}) => {           
         
                 return {
                     url: `/conversation/updateConversationByParticipants?participants=${payload?.participants}`,
@@ -29,6 +46,6 @@ const conversationApi = baseApi.injectEndpoints({
 })
 
 
-export const { useGetMyConversationsQuery, useGetConversationByIdQuery,useUpdateConversationByParticipantsMutation } = conversationApi
+export const { useGetMyConversationsQuery, useGetConversationByIdQuery,useCreateConversationMutation,useUpdateConversationByParticipantsMutation } = conversationApi
 
 export default conversationApi.endpoints;

@@ -16,7 +16,7 @@ const CreateNewMessage = () => {
     const allUsers: TUser[] = data?.data;
     const [searchTerm, setSearchTerm] = useState("")
     const [isUsersLoading, setIsUsersLoading] = useState(false)
-    const [selectedUser,setSelectedUser]=useState<string|null>(null)
+    const [selectedUserId,setSelectedUserId]=useState<string|null>(null)
     const [message,setMessage]= useState("")
     const [error,setError]  = useState("")
     const dispatch = useAppDispatch()
@@ -80,33 +80,60 @@ const loggedInUser  = useCurrentUser()
 
 const handleCreateMessage = ()=>{
     setError("")
-if(!selectedUser){
+if(!selectedUserId){
     return setError("Please select a user to start a chat.")
 }
 if(!message){
     return setError("Please write a message to chat.")
 }
 
-const participants = `${loggedInUser?.id}/${selectedUser}`;
+const participants = `${loggedInUser?.id}/${selectedUserId}`;
 // find conversation exits or not
 dispatch(conversationApi.getConversationById.initiate(participants)).unwrap().then((res)=>{
     if(res?.success && res?.data.id){
-        const payload:{data:{ lastMessage: string,groupName?:string,groupPhoto?:string,isGroup:boolean},participants:string} = { 
+        const payload:{data:{ lastMessage: string,groupName?:string,groupPhoto?:string},participants:string} = { 
             data:{
-                lastMessage:message,
-                isGroup:false
+                lastMessage:message
             },
             participants:`${participants}`
         }
         dispatch(conversationApi.updateConversationByParticipants.initiate(payload)).then(res=>{
-            if(res.data.success){
-                console.log("update success");
+            if(res?.data?.success && res?.data?.data?.id){
+                console.log("update success and update id",res?.data?.data?.id);
+                toast(res.data.message)
             }
         })
     }
 }).catch((res:any)=>{
     if(!res.data.success && res.data.message==="No Conversation found"){
-        console.log(res,"no");
+        const payload:{ 
+            lastMessage: string,
+            isgroup?:boolean,
+            groupName?:string,
+            groupPhoto?:string,
+            participants:string,
+            conversationsUsers:{userId:string}[]
+        } = {
+            lastMessage:message,
+             participants:`${participants}`,
+             conversationsUsers:[
+                {
+                    userId:loggedInUser!.id
+                },
+                {
+                    userId:selectedUserId
+                },
+             ]
+
+        }
+       
+        dispatch(conversationApi.createConversation.initiate(payload)).then((res:any)=>{
+            if(res?.data?.data?.id && res?.data?.success){
+                console.log(res.data.message,"id here",res.data.data.id);
+                toast(res.data.message)
+
+            }
+        })
     }
 })
 
@@ -135,7 +162,7 @@ dispatch(conversationApi.getConversationById.initiate(participants)).unwrap().th
                                 {
                                     users.map((user) =>
 
-                                        <div onClick={()=>setSelectedUser(user.id)} key={user.id} className={`h-[5rem] ${selectedUser===user.id?"bg-[#67849034]":""} w-full flex justify-between px-4 items-center border-[0.5px] border-t-0 border-b-[#EBEBEB]`}>
+                                        <div onClick={()=>setSelectedUserId(user.id)} key={user.id} className={`h-[5rem] ${selectedUserId===user.id?"bg-[#67849034]":""} w-full flex justify-between px-4 items-center border-[0.5px] border-t-0 border-b-[#EBEBEB]`}>
 
                                             <section className="flex gap-4 justify-center items-center">
 
@@ -158,7 +185,7 @@ dispatch(conversationApi.getConversationById.initiate(participants)).unwrap().th
                                                     </p>
                                                 </div>
                                             </section>
-                                            <input type="checkbox" checked={selectedUser===user.id} className="checkbox checkbox-info" />
+                                            <input type="checkbox" checked={selectedUserId===user.id} className="checkbox checkbox-info" />
                                         </div>
                                     )
                                 }
