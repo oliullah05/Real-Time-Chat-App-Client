@@ -20,16 +20,12 @@ const Conversation = () => {
             </section>
 
 
-
-
-
-
-
             {/* all conversations */}
         
              { isLoading?  <section className=" h-[70.5vh] flex justify-center items-center">
         <div className="loading loading-spinner  md:w-[5rem] w-[5rem]"></div>
-        </section>           :  <section className={`bg-red-20 max-h-[70.5vh] overflow-y-auto custom-scrollbar`}>
+        </section>           : 
+         <section className={`bg-red-20 max-h-[70.5vh] overflow-y-auto custom-scrollbar`}>
                     {
                         conversations?.map((data, index) =>
 
@@ -64,7 +60,8 @@ const Conversation = () => {
 
                         )
                     }
-                </section>}
+                </section>
+                }
            
 
         </div>

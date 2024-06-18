@@ -105,3 +105,307 @@ export const dummyConversationData = [
         lastMessage:"What's up, how are you?"
     },
 ]
+
+
+export const dummyUsers = [
+    {
+      id: 1,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "John Doe",
+      createdAt: new Date("2023-01-15").toDateString()
+    },
+    {
+      id: 2,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Jane Smith",
+      createdAt: new Date("2023-02-12").toDateString()
+    },
+    {
+      id: 3,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Mike Johnson",
+      createdAt: new Date("2023-03-20").toDateString()
+    },
+    {
+      id: 4,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Emily Davis",
+      createdAt: new Date("2023-04-18").toDateString()
+    },
+    {
+      id: 5,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Chris Lee",
+      createdAt: new Date("2023-05-10").toDateString()
+    },
+    {
+      id: 6,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Sarah Brown",
+      createdAt: new Date("2023-06-08").toDateString()
+    },
+    {
+      id: 7,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "David Wilson",
+      createdAt: new Date("2023-07-23").toDateString()
+    },
+    {
+      id: 8,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Olivia Miller",
+      createdAt: new Date("2023-08-15").toDateString()
+    },
+    {
+      id: 9,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Daniel Taylor",
+      createdAt: new Date("2023-09-10").toDateString()
+    },
+    {
+      id: 10,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Sophia Anderson",
+      createdAt: new Date("2023-10-01").toDateString()
+    },
+    {
+      id: 11,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Matthew Thomas",
+      createdAt: new Date("2023-01-07").toDateString()
+    },
+    {
+      id: 12,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Ava Martinez",
+      createdAt: new Date("2023-02-28").toDateString()
+    },
+    {
+      id: 13,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "James Robinson",
+      createdAt: new Date("2023-03-15").toDateString()
+    },
+    {
+      id: 14,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Isabella Clark",
+      createdAt: new Date("2023-04-05").toDateString()
+    },
+    {
+      id: 15,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Alexander Lewis",
+      createdAt: new Date("2023-05-20").toDateString()
+    },
+    {
+      id: 16,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Mia Walker",
+      createdAt: new Date("2023-06-25").toDateString()
+    },
+    {
+      id: 17,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Ethan Harris",
+      createdAt: new Date("2023-07-30").toDateString()
+    },
+    {
+      id: 18,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Amelia Hall",
+      createdAt: new Date("2023-08-18").toDateString()
+    },
+    {
+      id: 19,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Liam Young",
+      createdAt: new Date("2023-09-22").toDateString()
+    },
+    {
+      id: 20,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Harper King",
+      createdAt: new Date("2023-10-14").toDateString()
+    },
+    {
+      id: 21,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Benjamin Scott",
+      createdAt: new Date("2023-11-02").toDateString()
+    },
+    {
+      id: 22,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Charlotte Green",
+      createdAt: new Date("2023-11-15").toDateString()
+    },
+    {
+      id: 23,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Logan Baker",
+      createdAt: new Date("2023-12-01").toDateString()
+    },
+    {
+      id: 24,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Ella Gonzalez",
+      createdAt: new Date("2023-12-22").toDateString()
+    },
+    {
+      id: 25,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Lucas Carter",
+      createdAt: new Date("2023-12-30").toDateString()
+    },
+    {
+      id: 26,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Zoe Nelson",
+      createdAt: new Date("2024-01-05").toDateString()
+    },
+    {
+      id: 27,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Henry Moore",
+      createdAt: new Date("2024-01-12").toDateString()
+    },
+    {
+      id: 28,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Avery Turner",
+      createdAt: new Date("2024-01-18").toDateString()
+    },
+    {
+      id: 29,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Jack Flores",
+      createdAt: new Date("2024-01-25").toDateString()
+    },
+    {
+      id: 30,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Scarlett Ramirez",
+      createdAt: new Date("2024-02-02").toDateString()
+    },
+    {
+      id: 31,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Grace Martinez",
+      createdAt: new Date("2024-02-10").toDateString()
+    },
+    {
+      id: 32,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Samuel Reed",
+      createdAt: new Date("2024-02-18").toDateString()
+    },
+    {
+      id: 33,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Lily Diaz",
+      createdAt: new Date("2024-02-25").toDateString()
+    },
+    {
+      id: 34,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Andrew Hill",
+      createdAt: new Date("2024-03-05").toDateString()
+    },
+    {
+      id: 35,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Aubrey Brooks",
+      createdAt: new Date("2024-03-12").toDateString()
+    },
+    {
+      id: 36,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Jackson Bennett",
+      createdAt: new Date("2024-03-20").toDateString()
+    },
+    {
+      id: 37,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Victoria Foster",
+      createdAt: new Date("2024-03-28").toDateString()
+    },
+    {
+      id: 38,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Joshua Ross",
+      createdAt: new Date("2024-04-05").toDateString()
+    },
+    {
+      id: 39,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Penelope Murphy",
+      createdAt: new Date("2024-04-15").toDateString()
+    },
+    {
+      id: 40,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Daniel Ward",
+      createdAt: new Date("2024-04-22").toDateString()
+    },
+    {
+      id: 41,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Nora Cox",
+      createdAt: new Date("2024-05-02").toDateString()
+    },
+    {
+      id: 42,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Isaac Gray",
+      createdAt: new Date("2024-05-10").toDateString()
+    },
+    {
+      id: 43,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Luna Morgan",
+      createdAt: new Date("2024-05-18").toDateString()
+    },
+    {
+      id: 44,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Mason Howard",
+      createdAt: new Date("2024-05-25").toDateString()
+    },
+    {
+      id: 45,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Hannah Bell",
+      createdAt: new Date("2024-06-01").toDateString()
+    },
+    {
+      id: 46,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Wyatt Torres",
+      createdAt: new Date("2024-06-10").toDateString()
+    },
+    {
+      id: 47,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Natalie Rivera",
+      createdAt: new Date("2024-06-20").toDateString()
+    },
+    {
+      id: 48,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Sebastian Sanchez",
+      createdAt: new Date("2024-06-25").toDateString()
+    },
+    {
+      id: 49,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Aurora Hughes",
+      createdAt: new Date("2024-07-05").toDateString()
+    },
+    {
+      id: 50,
+      profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6sDjlhL_LPDsrVw-R-EexhIQd318Y0gD1rIB3Ych0vwI1ALDJFpKaN-muSw&s",
+      name: "Aiden Price",
+      createdAt: new Date("2024-07-10").toDateString()
+    }
+  ];

@@ -25,3 +25,10 @@ interface User {
     receiverProfilePhoto: string;
     receiverProfileName: string;
   }
+
+  export type TUser = {
+    id: number;
+    profilePhoto: string;
+    name: string;
+    createdAt: string; 
+  };
