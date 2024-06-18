@@ -52,7 +52,7 @@ const Conversation = () => {
                                 {/*  */}
                                 <div>
                                     {/* <SlOptions /> */}
-                                    <ReactTimeAgo date={data.updatedAt} locale="en-US"/>
+                                    <ReactTimeAgo date={data.updatedAt} locale="en-US" />
                                 </div>
 
                             </div>

@@ -5,6 +5,7 @@ import userApi, { useGetUsersWithoutMeForMessageQuery } from "../../../redux/fea
 import { TUser } from "./conversation.type";
 import { useAppDispatch } from "../../../redux/hooks";
 import { toast } from "sonner";
+import DataLoadingFromDatabase from "../../shared/DataLoadingFromDatabase";
 
 
 const CreateNewMessage = () => {
@@ -12,35 +13,42 @@ const CreateNewMessage = () => {
     const { data } = useGetUsersWithoutMeForMessageQuery(undefined);
     const allUsers: TUser[] = data?.data;
     const [searchTerm, setSearchTerm] = useState("")
-
+    const [isUsersLoading, setIsUsersLoading] = useState(false)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
 
         if (searchTerm) {
+            setIsUsersLoading(true)
             dispatch(userApi.searchUsersWithoutMeForMessage.initiate(searchTerm)).unwrap().then((users) => {
                 if (users.success) {
                     if (users.data.length > 0) {
                         setUsers(users.data);
+                        setIsUsersLoading(false)
                     }
                     else {
                         setUsers([])
+                        setIsUsersLoading(false)
                     }
                 }
                 else if (!users.success) {
                     toast.error(users.message)
+                    setIsUsersLoading(false)
                 }
             });
         }
 
         if (searchTerm.length === 0) {
+            setIsUsersLoading(true)
             dispatch(userApi.getUsersWithoutMeForMessage.initiate(undefined)).unwrap().then((users) => {
                 if (users.success) {
                     if (users.data.length > 0) {
                         setUsers(users.data);
+                        setIsUsersLoading(false)
                     }
                     else {
                         setUsers([])
+                        setIsUsersLoading(false)
                     }
                 }
             })
@@ -62,7 +70,7 @@ const CreateNewMessage = () => {
         }
     };
 
-    console.log(users);
+
 
     return (
         <div>
@@ -75,52 +83,58 @@ const CreateNewMessage = () => {
                         <button className="btn btn-lg btn-circle btn-ghost">✕</button>
                     </form>
 
-                    {users?.length > 0 ? <section className={`bg-red-20 max-h-[50vh] h-[50vh] overflow-y-auto custom-scrollbar`}>
+{!isUsersLoading ?
+                    <>
                         {
-                            users.map((data) =>
+                            users?.length > 0 ? <section className={`bg-red-20 max-h-[50vh] h-[50vh] overflow-y-auto custom-scrollbar`}>
+                                {
+                                    users.map((data) =>
 
-                                <div key={data.id} className="h-[5rem] bg-red-20 w-full flex justify-between px-4 items-center border-[0.5px] border-t-0 border-b-[#EBEBEB]">
+                                        <div key={data.id} className="h-[5rem] bg-red-20 w-full flex justify-between px-4 items-center border-[0.5px] border-t-0 border-b-[#EBEBEB]">
 
-                                    <section className="flex gap-4 justify-center items-center">
+                                            <section className="flex gap-4 justify-center items-center">
 
-                                        <div className={`avatar `}>
-                                            <div className="w-14 rounded-full">
-                                                <img src={data.profilePhoto} />
-                                            </div>
+                                                <div className={`avatar `}>
+                                                    <div className="w-14 rounded-full">
+                                                        <img src={data.profilePhoto} />
+                                                    </div>
+                                                </div>
+
+
+                                                <div className="mb-1">
+
+                                                    <h1 className="text-xl font-semibold text-left">{data.name}</h1>
+
+
+                                                    <p className="text-[14px] text-left flex gap-1"><span className="font-semibold">Joined At</span>
+                                                        <p> {
+                                                            new Date(data?.createdAt).toDateString()
+                                                        }</p>
+                                                    </p>
+                                                </div>
+                                            </section>
                                         </div>
-
-
-                                        <div className="mb-1">
-
-                                            <h1 className="text-xl font-semibold text-left">{data.name}</h1>
-
-
-                                            <p className="text-[14px] text-left flex gap-1"><span className="font-semibold">Joined At</span>
-                                                <p> {
-                                                    new Date(data?.createdAt).toDateString()
-                                                }</p>
-                                            </p>
-                                        </div>
-                                    </section>
-                                </div>
-                            )
+                                    )
+                                }
+                            </section> :
+                                <p className=" max-h-[50vh] h-[50vh] flex justify-center items-center">No User found</p>
                         }
-                    </section> :
-                        <p className=" max-h-[50vh] h-[50vh] flex justify-center items-center">No User found</p>}
+                    </> :<section className="max-h-[50vh] h-[50vh] flex justify-center items-center">
+        <div className="loading loading-spinner  md:w-[5rem] w-[5rem]"></div>
+        </section>
+
+}
+                        <section>
+                            <div className="py-4">
+                                <textarea id="message" name="message" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-15 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out" data-gramm="false" wt-ignore-input="true"></textarea>
+                            </div>
+                            <button className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Send message</button>
+                        </section>
 
 
 
-                    <section>
-                        <div className="py-4">
-                            <textarea id="message" name="message" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-15 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out" data-gramm="false" wt-ignore-input="true"></textarea>
-                        </div>
-                        <button className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Send message</button>
-                    </section>
 
-
-
-
-                </div>
+                    </div>
             </dialog>
         </div>
     );
