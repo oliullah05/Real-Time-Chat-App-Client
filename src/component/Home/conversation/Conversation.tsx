@@ -1,14 +1,8 @@
-
-import { SlOptions } from "react-icons/sl";
 import { useGetMyConversationsQuery } from "../../../redux/features/conversation/conversationApi";
 
 import ConversationHeader from "./ConversationHeader";
 import { TConversation } from "./conversation.type";
-import DataLoadingFromDatabase from "../../shared/DataLoadingFromDatabase";
-
-
-
-
+import ReactTimeAgo from "react-time-ago";
 const Conversation = () => {
 
     const { data, isLoading } = useGetMyConversationsQuery(null)
@@ -26,10 +20,16 @@ const Conversation = () => {
             </section>
 
 
+
+
+
+
+
             {/* all conversations */}
-            {/*   ${dummyConversationData.length>8?"overflow-y-scroll":""} */}
-            
-             { isLoading? <DataLoadingFromDatabase></DataLoadingFromDatabase>:  <section className={`bg-red-20 max-h-[70.5vh] overflow-y-auto custom-scrollbar`}>
+        
+             { isLoading?  <section className=" h-[70.5vh] flex justify-center items-center">
+        <div className="loading loading-spinner  md:w-[5rem] w-[5rem]"></div>
+        </section>           :  <section className={`bg-red-20 max-h-[70.5vh] overflow-y-auto custom-scrollbar`}>
                     {
                         conversations?.map((data, index) =>
 
@@ -55,7 +55,8 @@ const Conversation = () => {
 
                                 {/*  */}
                                 <div>
-                                    <SlOptions />
+                                    {/* <SlOptions /> */}
+                                    <ReactTimeAgo date={data.updatedAt} locale="en-US"/>
                                 </div>
 
                             </div>

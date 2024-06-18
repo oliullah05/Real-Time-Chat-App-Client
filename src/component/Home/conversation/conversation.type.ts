@@ -20,7 +20,7 @@ interface User {
     isDeleted: boolean;
     conversationsUsers: ConversationUser[];
     createdAt: string;
-    updatedAt: string;
+    updatedAt: Date |number;
     receiverProfileId: string;
     receiverProfilePhoto: string;
     receiverProfileName: string;
