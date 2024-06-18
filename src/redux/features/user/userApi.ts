@@ -9,9 +9,17 @@ const userApi = baseApi.injectEndpoints({
                     method: "GET"
                 }
             }
-        })
+        }),
+        searchUsersWithoutMeForMessage: builder.query({
+            query: (searchTerm) => ({
+                url: `/user/searchUsersWithoutMeForMessage/${searchTerm}`,
+                method: "GET"
+            })
+        }),
     })
 })
 
 
-export const { useGetUsersWithoutMeForMessageQuery } = userApi
+export const { useGetUsersWithoutMeForMessageQuery ,useSearchUsersWithoutMeForMessageQuery} = userApi
+
+export default userApi.endpoints

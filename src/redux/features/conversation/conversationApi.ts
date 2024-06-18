@@ -7,7 +7,7 @@ const conversationApi = baseApi.injectEndpoints({
                 url: "/conversation/my-conversations",
                 method: "GET"
             })
-        })
+        }),
     })
 })
 

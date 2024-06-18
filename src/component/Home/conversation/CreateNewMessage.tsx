@@ -1,17 +1,58 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { TbMessageShare } from "react-icons/tb";
-import { useGetUsersWithoutMeForMessageQuery } from "../../../redux/features/user/userApi";
+import userApi, { useGetUsersWithoutMeForMessageQuery } from "../../../redux/features/user/userApi";
 import { TUser } from "./conversation.type";
+import { useAppDispatch } from "../../../redux/hooks";
+import { toast } from "sonner";
 
 
 const CreateNewMessage = () => {
     const [users, setUsers] = useState<TUser[]>([])
-    const { data } = useGetUsersWithoutMeForMessageQuery(undefined)
-    const allUsers: TUser[] = data?.data
+    const { data } = useGetUsersWithoutMeForMessageQuery(undefined);
+    const allUsers: TUser[] = data?.data;
+    const [searchTerm, setSearchTerm] = useState("")
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+
+        if (searchTerm) {
+            dispatch(userApi.searchUsersWithoutMeForMessage.initiate(searchTerm)).unwrap().then((users) => {
+                if (users.success) {
+                    if (users.data.length > 0) {
+                        setUsers(users.data);
+                    }
+                    else {
+                        setUsers([])
+                    }
+                }
+                else if (!users.success) {
+                    toast.error(users.message)
+                }
+            });
+        }
+
+        if (searchTerm.length === 0) {
+            dispatch(userApi.getUsersWithoutMeForMessage.initiate(undefined)).unwrap().then((users) => {
+                if (users.success) {
+                    if (users.data.length > 0) {
+                        setUsers(users.data);
+                    }
+                    else {
+                        setUsers([])
+                    }
+                }
+            })
+        }
+    }, [searchTerm])
 
     useEffect(() => {
         setUsers(allUsers)
     }, [allUsers])
+
+
+
 
 
     const showModal = () => {
@@ -21,6 +62,7 @@ const CreateNewMessage = () => {
         }
     };
 
+    console.log(users);
 
     return (
         <div>
@@ -29,13 +71,13 @@ const CreateNewMessage = () => {
             <dialog id="new_message_modal" className="modal">
                 <div className="modal-box">
                     <form method="dialog" className="flex justify-between items-center p-0 m-0">
-                        <input type="email" id="email" name="email" className="w-[80%] bg-white rounded-3xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-5 leading-8 transition-colors duration-200 ease-in-out" placeholder="Search user to chat" />
+                        <input onChange={(e) => setSearchTerm(e.target.value)} type="text" id="text" name="text" className="w-[80%] bg-white rounded-3xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-5 leading-8 transition-colors duration-200 ease-in-out" placeholder="Search user to chat" />
                         <button className="btn btn-lg btn-circle btn-ghost">✕</button>
                     </form>
 
-                    <section className={`bg-red-20 max-h-[50vh] overflow-y-auto custom-scrollbar`}>
-                        {users &&
-                            users?.map((data) =>
+                    {users?.length > 0 ? <section className={`bg-red-20 max-h-[50vh] h-[50vh] overflow-y-auto custom-scrollbar`}>
+                        {
+                            users.map((data) =>
 
                                 <div key={data.id} className="h-[5rem] bg-red-20 w-full flex justify-between px-4 items-center border-[0.5px] border-t-0 border-b-[#EBEBEB]">
 
@@ -63,7 +105,8 @@ const CreateNewMessage = () => {
                                 </div>
                             )
                         }
-                    </section>
+                    </section> :
+                        <p className=" max-h-[50vh] h-[50vh] flex justify-center items-center">No User found</p>}
 
 
 
