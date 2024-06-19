@@ -202,7 +202,7 @@ dispatch(conversationApi.getConversationById.initiate(participants)).unwrap().th
                                 <textarea onChange={(e)=>setMessage(e.target.value)} id="message" name="message" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-15 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out" data-gramm="false" wt-ignore-input="true"></textarea>
                             </div>
                             {error && <p className={`text-center py-3 text-error`}>{error}</p>}
-                            <button onClick={handleCreateMessage} className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Send message</button>
+                            <button onClick={handleCreateMessage} className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Send message oli</button>
                         </section>
 
 
