@@ -110,7 +110,7 @@ const CreateNewMessage = () => {
         }
     };
 
-console.log(selectedUsersId);
+   
 
 
     const handleCreateMessage = () => {
@@ -126,83 +126,48 @@ console.log(selectedUsersId);
         }
 
 
-
-
-
-
         const selectedParticipants = selectedUsersId.join('/');
         const participants = `${loggedInUser!.id}/${selectedParticipants}`
 
-
-
-
-
-        // find conversation exits or not
-        dispatch(conversationApi.getConversationByParticipants.initiate(participants)).unwrap().then((res) => {
-            // update conversation
-            if (res?.success && res?.data.id) {
-                const payload: { data: { lastMessage: string, groupName?: string, groupPhoto?: string }, participants: string } = {
-                    data: {
-                        lastMessage: message,
-                    },
-                    participants: `${participants}`
-                }
-                if (groupName) {
-                    payload.data.groupName = groupName
-                }
-                if (groupPhoto) {
-                    payload.data.groupPhoto = groupPhoto
-                }
-
-                dispatch(conversationApi.updateConversationByParticipants.initiate(payload)).then(res => {
-                    if (res?.data?.success && res?.data?.data?.id) {
-                        console.log("update success and update id", res?.data?.data?.id);
-                        toast(res.data.message)
-                    }
-                })
+        const conversationsUsers: { userId: string }[] = []
+        participants.split('/').forEach(id => {
+            if (id) {
+                conversationsUsers.push({ userId: id })
             }
-        }).catch((res: any) => {
-            if (!res.data.success && res.data.message === "No Conversation found") {
-                // create conversation
-                console.log(res.data,participants);
-                const conversationsUsers: { userId: string }[] = []
-                participants.split('/').forEach(id => {
-                    if (id) {
-                        conversationsUsers.push({ userId: id })
-                    }
-                });
+        });
 
-                const payload: {
-                    lastMessage: string,
-                    isGroup?: boolean,
-                    groupName?: string,
-                    groupPhoto?: string,
-                    participants: string,
-                    conversationsUsers: { userId: string }[]
-                } = {
-                    lastMessage: message,
-                    participants: `${participants}`,
-                    isGroup: true,
-                    conversationsUsers
-                }
-                if (groupName) {
-                    payload.groupName = groupName
-                }
-                if (groupPhoto) {
-                    payload.groupPhoto = groupPhoto
-                }
+        const payload: {
+            lastMessage: string,
+            participants: string,
+            isGroup?: boolean,
+            groupName?: string,
+            groupPhoto?: string,
+            conversationsUsers: { userId: string }[]
+        } = {
+            lastMessage: message,
+            isGroup: true,
+            participants,
+            conversationsUsers
+        }
+        if (groupName) {
+            payload.groupName = groupName;
+        }
+        if (groupPhoto) {
+            payload.groupPhoto = groupPhoto
+        }
 
 
 
-                dispatch(conversationApi.createConversation.initiate(payload)).then((res: any) => {
-                    if (res?.data?.data?.id && res?.data?.success) {
-                        console.log(res.data.message, "id here", res.data.data.id);
-                        toast(res.data.message)
 
-                    }
-                })
-            }
+        dispatch(conversationApi.createConversation.initiate(payload)).unwrap().then((res) => {
+            console.log(res);
+            console.log(res.success);
+            console.log(res.statusCode);
         })
+
+
+
+
 
 
     }

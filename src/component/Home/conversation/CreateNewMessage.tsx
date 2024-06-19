@@ -89,54 +89,22 @@ const CreateNewMessage = () => {
 
         const participants = `${loggedInUser?.id}/${selectedUserId}`;
         // find conversation exits or not
-        dispatch(conversationApi.getConversationByParticipants.initiate(participants)).unwrap().then((res) => {
-            // update conversation
-            if (res?.success && res?.data.id) {
-                const payload: { data: { lastMessage: string, groupName?: string, groupPhoto?: string }, participants: string } = {
-                    data: {
-                        lastMessage: message
-                    },
-                    participants: `${participants}`
-                }
-                dispatch(conversationApi.updateConversationByParticipants.initiate(payload)).then(res => {
-                    if (res?.data?.success && res?.data?.data?.id) {
-                        console.log("update success and update id", res?.data?.data?.id);
-                        toast(res.data.message)
-                    }
-                })
-            }
-        }).catch((res: any) => {
-            if (!res.data.success && res.data.message === "No Conversation found") {
-                // create conversation
-                const payload: {
-                    lastMessage: string,
-                    isgroup?: boolean,
-                    groupName?: string,
-                    groupPhoto?: string,
-                    participants: string,
-                    conversationsUsers: { userId: string }[]
-                } = {
-                    lastMessage: message,
-                    participants: `${participants}`,
-                    conversationsUsers: [
-                        {
-                            userId: loggedInUser!.id
-                        },
-                        {
-                            userId: selectedUserId
-                        },
-                    ]
-
-                }
-
-                dispatch(conversationApi.createConversation.initiate(payload)).then((res: any) => {
-                    if (res?.data?.data?.id && res?.data?.success) {
-                        console.log(res.data.message, "id here", res.data.data.id);
-                        toast(res.data.message)
-
-                    }
-                })
-            }
+        const payload = {
+            lastMessage: message,
+            participants,
+            conversationsUsers: [
+                {
+                    userId: loggedInUser!.id
+                },
+                {
+                    userId: selectedUserId
+                },
+            ]
+        }
+        dispatch(conversationApi.createConversation.initiate(payload)).unwrap().then((res) => {
+            console.log(res);
+            console.log(res.success);
+            console.log(res.statusCode);
         })
 
 

@@ -19,10 +19,10 @@ const conversationApi = baseApi.injectEndpoints({
         createConversation: builder.mutation({
             query: (payload: {
                 lastMessage: string,
+                participants: string,
                 isGroup?: boolean,
                 groupName?: string,
                 groupPhoto?: string,
-                participants: string,
                 conversationsUsers: { userId: string }[]
             }) => {
 
@@ -32,16 +32,8 @@ const conversationApi = baseApi.injectEndpoints({
                     body: payload
                 }
             },
-            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-                const conversation: any = await queryFulfilled;
-                if(conversation.data.success &&   conversation.data.data.id){
-                   const payload = {
-                    message:arg.lastMessage,
-                    conversationId:conversation.data.data.id
-                   }
-                   dispatch(messageApi.createMessage.initiate(payload)).unwrap()
-                }
-            }
+            // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            // }
         },
         ),
         updateConversationByParticipants: builder.mutation({
@@ -65,6 +57,7 @@ const conversationApi = baseApi.injectEndpoints({
             }
         }),
 
+        
     }),
 })
 
