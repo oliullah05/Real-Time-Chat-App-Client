@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../../api/baseApi";
+import messageApi from "../message/messageApi";
 
 const conversationApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -8,44 +10,65 @@ const conversationApi = baseApi.injectEndpoints({
                 method: "GET"
             })
         }),
-        getConversationById: builder.query({
+        getConversationByParticipants: builder.query({
             query: (participants: string) => ({
                 url: `/conversation/conversationByParticipants?participants=${participants}`,
                 method: "GET"
             })
         }),
         createConversation: builder.mutation({
-            query: (payload:{ 
+            query: (payload: {
                 lastMessage: string,
-                isgroup?:boolean,
-                groupName?:string,
-                groupPhoto?:string,
-                participants:string,
-                conversationsUsers:{userId:string}[]
-            }) => {           
-        
+                isGroup?: boolean,
+                groupName?: string,
+                groupPhoto?: string,
+                participants: string,
+                conversationsUsers: { userId: string }[]
+            }) => {
+
                 return {
                     url: `/conversation/create-conversation`,
                     method: "POST",
                     body: payload
                 }
+            },
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                const conversation: any = await queryFulfilled;
+                if(conversation.data.success &&   conversation.data.data.id){
+                   const payload = {
+                    message:arg.lastMessage,
+                    conversationId:conversation.data.data.id
+                   }
+                   dispatch(messageApi.createMessage.initiate(payload)).unwrap()
+                }
             }
-        }),
+        },
+        ),
         updateConversationByParticipants: builder.mutation({
-            query: (payload:{data:{ lastMessage: string,groupName?:string,groupPhoto?:string},participants:string}) => {           
-        
+            query: (payload: { data: { lastMessage: string, groupName?: string, groupPhoto?: string }, participants: string }) => {
+
                 return {
                     url: `/conversation/updateConversationByParticipants?participants=${payload?.participants}`,
                     method: "PUT",
                     body: payload.data
                 }
+            },
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                const conversation: any = await queryFulfilled;
+                if(conversation.data.success &&   conversation.data.data.id){
+                   const payload = {
+                    message:arg.data.lastMessage,
+                    conversationId:conversation.data.data.id
+                   }
+                   dispatch(messageApi.createMessage.initiate(payload)).unwrap()
+                }
             }
         }),
 
-    })
+    }),
 })
 
 
-export const { useGetMyConversationsQuery, useGetConversationByIdQuery,useCreateConversationMutation,useUpdateConversationByParticipantsMutation } = conversationApi
+export const { useGetMyConversationsQuery, useGetConversationByParticipantsQuery, useCreateConversationMutation, useUpdateConversationByParticipantsMutation } = conversationApi
 
 export default conversationApi.endpoints;

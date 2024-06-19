@@ -110,7 +110,7 @@ const CreateNewMessage = () => {
         }
     };
 
-
+console.log(selectedUsersId);
 
 
     const handleCreateMessage = () => {
@@ -138,7 +138,7 @@ const CreateNewMessage = () => {
 
 
         // find conversation exits or not
-        dispatch(conversationApi.getConversationById.initiate(participants)).unwrap().then((res) => {
+        dispatch(conversationApi.getConversationByParticipants.initiate(participants)).unwrap().then((res) => {
             // update conversation
             if (res?.success && res?.data.id) {
                 const payload: { data: { lastMessage: string, groupName?: string, groupPhoto?: string }, participants: string } = {
@@ -163,7 +163,8 @@ const CreateNewMessage = () => {
             }
         }).catch((res: any) => {
             if (!res.data.success && res.data.message === "No Conversation found") {
-
+                // create conversation
+                console.log(res.data,participants);
                 const conversationsUsers: { userId: string }[] = []
                 participants.split('/').forEach(id => {
                     if (id) {
@@ -173,7 +174,7 @@ const CreateNewMessage = () => {
 
                 const payload: {
                     lastMessage: string,
-                    isgroup?: boolean,
+                    isGroup?: boolean,
                     groupName?: string,
                     groupPhoto?: string,
                     participants: string,
@@ -181,7 +182,7 @@ const CreateNewMessage = () => {
                 } = {
                     lastMessage: message,
                     participants: `${participants}`,
-                    isgroup:true,
+                    isGroup: true,
                     conversationsUsers
                 }
                 if (groupName) {
