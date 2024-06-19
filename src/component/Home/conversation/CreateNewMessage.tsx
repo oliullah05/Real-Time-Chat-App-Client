@@ -149,7 +149,7 @@ dispatch(conversationApi.getConversationById.initiate(participants)).unwrap().th
             <button className="" onClick={showModal}><TbMessageShare className="w-12 h-12 bg-[#E6E6E6] px-3 py-2 rounded-md" /></button>
 
             <dialog id="new_message_modal" className="modal">
-                <div className="modal-box">
+                <div className="modal-box py-4">
                     <form method="dialog" className="flex justify-between items-center p-0 m-0">
                         <input onChange={(e) => setSearchTerm(e.target.value)} type="text" id="text" name="text" className="w-[80%] bg-white rounded-3xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-5 leading-8 transition-colors duration-200 ease-in-out" placeholder="Search user to chat" />
                         <button className="btn btn-lg btn-circle btn-ghost">✕</button>
@@ -199,10 +199,10 @@ dispatch(conversationApi.getConversationById.initiate(participants)).unwrap().th
 }
                         <section>
                             <div className="pt-4">
-                                <textarea onChange={(e)=>setMessage(e.target.value)} id="message" name="message" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-15 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out" data-gramm="false" wt-ignore-input="true"></textarea>
+                                <textarea required placeholder="Please write a message to send." onChange={(e)=>setMessage(e.target.value)} id="message" name="message" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-15 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out" data-gramm="false" wt-ignore-input="true"></textarea>
                             </div>
                             {error && <p className={`text-center py-3 text-error`}>{error}</p>}
-                            <button onClick={handleCreateMessage} className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Send message oli</button>
+                            <button onClick={handleCreateMessage} className="text-white mt-2 bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Send message </button>
                         </section>
 
 
