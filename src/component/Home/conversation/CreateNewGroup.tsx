@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { HiUserGroup } from "react-icons/hi2";
 import { toast } from "sonner";
 import useCurrentUser from "../../../hooks/useCurrentUser";
@@ -20,6 +20,9 @@ const CreateNewMessage = () => {
     const [message, setMessage] = useState("")
     const [error, setError] = useState("")
     const [selectedUsersId, setSelectedUsersId] = useState<string[] | []>([])
+    const [groupName, setGroupName] = useState<string | null>("")
+    const [isImgUploadLoading, setIsImageUploadLoading] = useState(false)
+    const [groupPhoto, setGroupPhoto] = useState<string | null>(null)
     const dispatch = useAppDispatch()
     const loggedInUser = useCurrentUser()
 
@@ -77,6 +80,39 @@ const CreateNewMessage = () => {
     };
 
 
+
+    const handleProfilePhotoUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files;
+        if (!file || file.length === 0) return;
+        setIsImageUploadLoading(true)
+        const form = new FormData();
+        form.set("image", file[0]);
+
+        try {
+            const res = await fetch(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`, {
+                method: "POST",
+                body: form
+            });
+
+            if (!res.ok) {
+                setIsImageUploadLoading(false)
+                toast.error('Image upload failed');
+            }
+
+            const data = await res.json();
+            if (data?.data?.display_url) {
+                toast.success("Image upload successfully")
+                setGroupPhoto(data?.data?.display_url);
+            }
+            setIsImageUploadLoading(false)
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
+    };
+
+
+
+
     const handleCreateMessage = () => {
         setError("")
         if (!selectedUserId) {
@@ -98,15 +134,26 @@ const CreateNewMessage = () => {
         const participants = `${loggedInUser!.id}/${selectedParticipants}`
 
 
+
+
+
         // find conversation exits or not
         dispatch(conversationApi.getConversationById.initiate(participants)).unwrap().then((res) => {
+            // update conversation
             if (res?.success && res?.data.id) {
                 const payload: { data: { lastMessage: string, groupName?: string, groupPhoto?: string }, participants: string } = {
                     data: {
-                        lastMessage: message
+                        lastMessage: message,
                     },
                     participants: `${participants}`
                 }
+                if (groupName) {
+                    payload.data.groupName = groupName
+                }
+                if (groupPhoto) {
+                    payload.data.groupPhoto = groupPhoto
+                }
+
                 dispatch(conversationApi.updateConversationByParticipants.initiate(payload)).then(res => {
                     if (res?.data?.success && res?.data?.data?.id) {
                         console.log("update success and update id", res?.data?.data?.id);
@@ -134,9 +181,17 @@ const CreateNewMessage = () => {
                 } = {
                     lastMessage: message,
                     participants: `${participants}`,
+                    isgroup:true,
                     conversationsUsers
-
                 }
+                if (groupName) {
+                    payload.groupName = groupName
+                }
+                if (groupPhoto) {
+                    payload.groupPhoto = groupPhoto
+                }
+
+
 
                 dispatch(conversationApi.createConversation.initiate(payload)).then((res: any) => {
                     if (res?.data?.data?.id && res?.data?.success) {
@@ -186,18 +241,41 @@ const CreateNewMessage = () => {
                     }
                     <section>
                         <div className="pt-4 text-left">
-                        <div className="">
-                        <label htmlFor="groupName" className="leading-7 block text-base-content ">Group Name</label>
-                                <input type="text" placeholder="Please give a group name" id="groupName" name="groupName" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-12 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out" data-gramm="false" wt-ignore-input="true"></input>
+                            <div className="">
+                                <label htmlFor="groupName" className="leading-7 block text-base-content ">Group Name</label>
+                                <input onChange={(e) => setGroupName(e.target.value)} type="text" placeholder="Please give a group name" id="groupName" name="groupName" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-12 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out" data-gramm="false" wt-ignore-input="true"></input>
                             </div>
-                        <div className={`form-control w-full`}>
-                                    <label htmlFor='profilePhoto' className="leading-7 ">
-                                        <span className={" text-base-content "}>Profile Photo</span>
-                                    </label>
-                                    { <input  multiple={false} accept="image/*" name='profilePhoto' id='profilePhoto' type="file" className="file-input file-input-bordered w-full " />}
-                                </div>
 
-                     
+
+
+
+
+
+
+                            <div className={`form-control w-full`}>
+                                <label htmlFor='profilePhoto' className="leading-7 ">
+                                    <span className={" text-base-content "}>Profile Photo</span>
+                                </label>
+                                {isImgUploadLoading ? <span className="loading loading-dots loading-lg"></span> : <input onChange={handleProfilePhotoUpload} multiple={false} accept="image/*" name='profilePhoto' id='profilePhoto' type="file" className="file-input file-input-bordered w-full " />}
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             <div>
                                 <label htmlFor="message" className="leading-7 block  text-gray-600">Message</label>
                                 <textarea onChange={(e) => setMessage(e.target.value)} id="message" name="message" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-15 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out" data-gramm="false" wt-ignore-input="true"></textarea>
