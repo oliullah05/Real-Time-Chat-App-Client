@@ -1,10 +1,11 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetMyConversationsQuery } from "../../../redux/features/conversation/conversationApi";
 import groupPhotoAvater from "../../../assets/icon/groupPhotoAvater.png"
 import ConversationHeader from "./ConversationHeader";
 import { TConversation } from "./conversation.type";
 import ReactTimeAgo from "react-time-ago";
 const Conversation = () => {
+const {conversationId} = useParams()
 
     const { data, isLoading } = useGetMyConversationsQuery(null)
 
@@ -26,13 +27,16 @@ const Conversation = () => {
             {isLoading ? <section className=" h-[70.5vh] flex justify-center items-center">
                 <div className="loading loading-spinner  md:w-[5rem] w-[5rem]"></div>
             </section> :
-                <section className={`bg-red-20 max-h-[70.5vh] overflow-y-auto custom-scrollbar`}>
+                <section className={`bg-red-20 max-h-[70.5vh] overflow-y-auto overflow-hidden custom-scrollbar`}>
                     {
                         conversations?.map((data) =>
 
-                            <div onClick={() => navigate(`/inbox/${data.id}`)} key={data.id} className="h-[5rem]  w-full flex justify-between px-4 items-center border-[0.5px] border-t-0 border-b-[#EBEBEB]">
+                            <div 
+                            onClick={() => navigate(`/inbox/${data.id}`)} key={data.id} 
+                            className={`h-[5rem] w-full flex justify-between px-4 items-center 
+                            border-[0.5px] border-t-0 border-b-[#EBEBEB]  ${conversationId===data.id?"border-l-[5px] border-[#3DB16B]":""}`}>
 
-                                <section className="flex gap-4 justify-center items-center">
+                                <section className={`flex gap-4 justify-center items-center ` }>
                                     {/* avater */}
                                     <div className={`avatar `}>
                                         <div className="w-14 rounded-full">

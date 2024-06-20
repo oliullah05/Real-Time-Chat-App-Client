@@ -1,10 +1,9 @@
-import React from "react";
 import { BiSolidVideo } from "react-icons/bi";
 import { FaSquarePhone } from "react-icons/fa6";
-import groupPhotoAvater from "../../../assets/icon/groupPhotoAvater.png";
 import { SlOptions } from "react-icons/sl";
-import { useGetConversationByIdQuery } from "../../../redux/features/conversation/conversationApi";
 import { useParams } from "react-router-dom";
+import groupPhotoAvater from "../../../assets/icon/groupPhotoAvater.png";
+import { useGetConversationByIdQuery } from "../../../redux/features/conversation/conversationApi";
 
 const MessageHeader = () => {
   const { conversationId } = useParams();
