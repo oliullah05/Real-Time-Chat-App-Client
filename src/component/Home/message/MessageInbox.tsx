@@ -78,9 +78,9 @@ const MessageInbox = () => {
             })
             .catch(error => console.error('Download failed', error));
     };
-    
 
-    
+
+
 
 
     return (
@@ -107,7 +107,32 @@ const MessageInbox = () => {
                             </div>
 
                             }
-                            {/*   text message end */}
+  {/*   text message end */}
+
+
+
+
+
+                            {/* for image */}
+
+
+                            {data.type === "image" && <div className={`max-w-[70%] `}>
+                                <img className={` glass
+                                 px-4 py-2 my-5 rounded-lg  
+                                `} src={data.message} ></img>
+                            </div>
+                            }
+                            {/* for image end */}
+
+
+
+
+
+
+
+
+
+                          
 
                             {/* for audio  */}
 
@@ -135,7 +160,7 @@ const MessageInbox = () => {
 
                             {/* for document */}
 
-                            {(data.type === "document" || data.type==="code"||data.type=="web") && data.id=="51" && <div>
+                            {(data.type === "document" || data.type === "code" || data.type == "web") && data.id == "51" && <div>
                                 {/* <FaFileAlt /> */}
                                 {/* http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718423938/ugn6sqmhi3hqmchk88mn.zip */}
                                 <button className="p- btn btn-primary" onClick={() => downloadFileAtURL(data.message)}>Download Rar</button>
