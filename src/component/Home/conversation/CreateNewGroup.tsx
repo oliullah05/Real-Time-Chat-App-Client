@@ -2,7 +2,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, useEffect, useState } from "react";
 import { HiUserGroup } from "react-icons/hi2";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import conversationApi from "../../../redux/features/conversation/conversationApi";

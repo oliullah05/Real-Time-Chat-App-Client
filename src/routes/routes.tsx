@@ -2,12 +2,12 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 
-import PrivateRoute from "./PrivateRoute";
-import PublicRoute from "./PublicRoute";
 import { Suspense, lazy } from "react";
+import Message from "../component/Home/message/Message";
 import Loading from "../component/shared/Loading";
 import Home from "../layout/Home";
-import HomeWithInbox from "../layout/HomeWithInbox";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
 const Login = lazy(() => import("../component/login/Login"))
 const Register = lazy(() => import("../component/register/register"))
 const ForgotPassword = lazy(() => import("../component/forgotPassword/ForgotPassword"))
@@ -18,12 +18,19 @@ const ForgotPassword = lazy(() => import("../component/forgotPassword/ForgotPass
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <PrivateRoute><Home></Home></PrivateRoute>
+    element: <PrivateRoute><Home></Home></PrivateRoute>,
+    children: [
+      {
+        path: "/",
+        element: <p>Please Select a chat</p>
+      },
+      {
+        path: "/inbox/:conversationId",
+        element: <Message></Message>
+      },
+    ]
   },
-  {
-    path: "/inbox/:id",
-    element:<PrivateRoute><HomeWithInbox></HomeWithInbox></PrivateRoute>
-  },
+
 
   {
     path: "/login",

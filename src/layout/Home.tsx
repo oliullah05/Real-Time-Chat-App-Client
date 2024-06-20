@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import Conversation from "../component/Home/conversation/Conversation";
 import Settings from "../component/Home/settings/Settings";
 
@@ -7,7 +8,7 @@ const Home = () => {
           <Settings>
           </Settings>
           <Conversation></Conversation>
-          <p>please select a chat</p>
+          <Outlet></Outlet>
         </div>
     );
 };
