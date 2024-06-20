@@ -2,12 +2,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { TbMessageShare } from "react-icons/tb";
-import userApi, { useGetUsersWithoutMeForMessageQuery } from "../../../redux/features/user/userApi";
-import { TUser } from "./conversation.type";
-import { useAppDispatch } from "../../../redux/hooks";
 import { toast } from "sonner";
-import conversationApi from "../../../redux/features/conversation/conversationApi";
 import useCurrentUser from "../../../hooks/useCurrentUser";
+import conversationApi from "../../../redux/features/conversation/conversationApi";
+import userApi, { useGetUsersWithoutMeForMessageQuery } from "../../../redux/features/user/userApi";
+import { useAppDispatch } from "../../../redux/hooks";
+import { TUser } from "./conversation.type";
 
 
 const CreateNewMessage = () => {
@@ -94,17 +94,26 @@ const CreateNewMessage = () => {
             participants,
             conversationsUsers: [
                 {
-                    userId: loggedInUser!.id
+                    userId: loggedInUser!.id,
                 },
                 {
                     userId: selectedUserId
                 },
             ]
         }
-        dispatch(conversationApi.createConversation.initiate(payload)).unwrap().then((res) => {
-            console.log(res);
-            console.log(res.success);
-            console.log(res.statusCode);
+        dispatch(conversationApi.createOrUpdateConversationThenSlientlyCreateMessage.initiate(payload)).unwrap().then((res) => {
+            if (res.statusCode === 201) {
+                toast.success("Message created successfully")
+            }
+            if (res.statusCode === 200) {
+                toast.success("Message updated successfully")
+            }
+
+        }).catch((err: any) => {
+
+            if (!err.data.success) {
+                setError(err.data.message)
+            }
         })
 
 

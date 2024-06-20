@@ -7,6 +7,7 @@ import PublicRoute from "./PublicRoute";
 import { Suspense, lazy } from "react";
 import Loading from "../component/shared/Loading";
 import Home from "../layout/Home";
+import HomeWithInbox from "../layout/HomeWithInbox";
 const Login = lazy(() => import("../component/login/Login"))
 const Register = lazy(() => import("../component/register/register"))
 const ForgotPassword = lazy(() => import("../component/forgotPassword/ForgotPassword"))
@@ -17,32 +18,33 @@ const ForgotPassword = lazy(() => import("../component/forgotPassword/ForgotPass
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <PrivateRoute><Home></Home></PrivateRoute>,
-    children:[{
-      path:"/:id",
-     element:<PrivateRoute><Home></Home></PrivateRoute>
-    }]
+    element: <PrivateRoute><Home></Home></PrivateRoute>
   },
+  {
+    path: "/inbox/:id",
+    element:<PrivateRoute><HomeWithInbox></HomeWithInbox></PrivateRoute>
+  },
+
   {
     path: "/login",
     element: <PublicRoute>
-      <Suspense fallback={<Loading/>}>
+      <Suspense fallback={<Loading />}>
         <Login />
       </Suspense></PublicRoute>
   },
   {
     path: "/register",
-    element:  <PublicRoute>
-    <Suspense fallback={<Loading/>}>
-      <Register />
-    </Suspense></PublicRoute>
+    element: <PublicRoute>
+      <Suspense fallback={<Loading />}>
+        <Register />
+      </Suspense></PublicRoute>
   },
   {
     path: "/forgot-password",
-    element:  <PublicRoute>
-    <Suspense fallback={<Loading/>}>
-      <ForgotPassword />
-    </Suspense></PublicRoute>
+    element: <PublicRoute>
+      <Suspense fallback={<Loading />}>
+        <ForgotPassword />
+      </Suspense></PublicRoute>
   },
 ]);
 

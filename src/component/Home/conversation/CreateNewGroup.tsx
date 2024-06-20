@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, useEffect, useState } from "react";
 import { HiUserGroup } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import conversationApi from "../../../redux/features/conversation/conversationApi";
@@ -25,8 +26,7 @@ const CreateNewMessage = () => {
     const [groupPhoto, setGroupPhoto] = useState<string | null>(null)
     const dispatch = useAppDispatch()
     const loggedInUser = useCurrentUser()
-
-
+  
 
     useEffect(() => {
 
@@ -118,6 +118,9 @@ const CreateNewMessage = () => {
         if (!selectedUserId) {
             return setError("Please select a user to start a chat.")
         }
+        if (!groupName) {
+            return setError("Please enter a valid group name.")
+        }
         if (!message) {
             return setError("Please write a message to chat.")
         }
@@ -139,7 +142,7 @@ const CreateNewMessage = () => {
         const payload: {
             lastMessage: string,
             participants: string,
-            isGroup?: boolean,
+            isGroup: boolean,
             groupName?: string,
             groupPhoto?: string,
             conversationsUsers: { userId: string }[]
@@ -159,10 +162,17 @@ const CreateNewMessage = () => {
 
 
 
-        dispatch(conversationApi.createConversation.initiate(payload)).unwrap().then((res) => {
-            console.log(res);
-            console.log(res.success);
-            console.log(res.statusCode);
+        dispatch(conversationApi.createGroupConversationThenSlientlyCreateMessage.initiate(payload)).unwrap().then((res) => {
+            if (res.statusCode === 201) {
+                toast.success("Group created successfully")
+                
+            }
+
+        }).catch((err: any) => {
+
+            if (!err.data.success) {
+                setError(err.data.message)
+            }
         })
 
 
@@ -248,7 +258,7 @@ const CreateNewMessage = () => {
                             </div>
                         </div>
                         {error && <p className={`text-center py-3 text-error`}>{error}</p>}
-                        <button onClick={handleCreateMessage} className="text-white bg-indigo-500 border-0 mt-2 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Send message</button>
+                        <button disabled={isImgUploadLoading} onClick={handleCreateMessage} className="text-white bg-indigo-500 border-0 mt-2 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">{isImgUploadLoading?"Uploading...":"Send message"}</button>
                     </section>
 
 

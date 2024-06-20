@@ -16,7 +16,7 @@ const conversationApi = baseApi.injectEndpoints({
                 method: "GET"
             })
         }),
-        createConversation: builder.mutation({
+        createOrUpdateConversationThenSlientlyCreateMessage: builder.mutation({
             query: (payload: {
                 lastMessage: string,
                 participants: string,
@@ -27,7 +27,7 @@ const conversationApi = baseApi.injectEndpoints({
             }) => {
 
                 return {
-                    url: `/conversation/create-conversation`,
+                    url: `/conversation/create-or-update-conversation-then-sliently-create-message`,
                     method: "POST",
                     body: payload
                 }
@@ -36,6 +36,33 @@ const conversationApi = baseApi.injectEndpoints({
             // }
         },
         ),
+
+        createGroupConversationThenSlientlyCreateMessage: builder.mutation({
+            query: (payload: {
+                lastMessage: string,
+                participants: string,
+                isGroup: boolean,
+                groupName?: string,
+                groupPhoto?: string,
+                conversationsUsers: { userId: string }[]
+            }) => {
+
+                return {
+                    url: `/conversation/create-group-conversation-then-sliently-create-message`,
+                    method: "POST",
+                    body: payload
+                }
+            },
+            // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            // }
+        },
+        ),
+
+
+
+
+
+
         updateConversationByParticipants: builder.mutation({
             query: (payload: { data: { lastMessage: string, groupName?: string, groupPhoto?: string }, participants: string }) => {
 
@@ -47,21 +74,27 @@ const conversationApi = baseApi.injectEndpoints({
             },
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
                 const conversation: any = await queryFulfilled;
-                if(conversation.data.success &&   conversation.data.data.id){
-                   const payload = {
-                    message:arg.data.lastMessage,
-                    conversationId:conversation.data.data.id
-                   }
-                   dispatch(messageApi.createMessage.initiate(payload)).unwrap()
+                if (conversation.data.success && conversation.data.data.id) {
+                    const payload = {
+                        message: arg.data.lastMessage,
+                        conversationId: conversation.data.data.id
+                    }
+                    dispatch(messageApi.createMessage.initiate(payload)).unwrap()
                 }
             }
         }),
 
-        
+
     }),
 })
 
 
-export const { useGetMyConversationsQuery, useGetConversationByParticipantsQuery, useCreateConversationMutation, useUpdateConversationByParticipantsMutation } = conversationApi
+export const {
+    useGetMyConversationsQuery,
+    useGetConversationByParticipantsQuery,
+    useCreateOrUpdateConversationThenSlientlyCreateMessageMutation,
+    useCreateGroupConversationThenSlientlyCreateMessageMutation,
+    useUpdateConversationByParticipantsMutation
+} = conversationApi
 
 export default conversationApi.endpoints;
