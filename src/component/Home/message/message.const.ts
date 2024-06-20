@@ -2,7 +2,67 @@
 export const dummyMessageData:any = [
     {
       id: "d18d50fe-89ca-44fd-bc08-513217da6d4a",
-      message: "some text message",
+      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro laudantium dolor doloremque soluta omnis molestiae, quod quae perferendis harum iste delectus provident autem impedit aperiam? Impedit animi incidunt aspernatur deleniti fuga, perferendis eaque voluptatibus quia nam inventore expedita ducimus cumque pariatur sequi reprehenderit at in dolor mollitia repudiandae qui? Voluptate?",
+      type: "text",
+      isDeleted: false,
+      createdAt: "2024-06-20T04:59:15.449Z",
+      updatedAt: "2024-06-20T04:59:15.449Z",
+      conversationId: "9063071e-d6bc-4374-8686-52763e36129d",
+      senderId: "9291d8b2-8ad7-4b7c-8647-1393d5a70dca"
+    },
+    {
+      id: "d18d50fe-89ca-44fd-bc08-513217da6d4a",
+      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro laudantium dolor doloremque soluta omnis molestiae, quod quae perferendis harum iste delectus provident autem impedit aperiam? Impedit animi incidunt aspernatur deleniti fuga, perferendis eaque voluptatibus quia nam inventore expedita ducimus cumque pariatur sequi reprehenderit at in dolor mollitia repudiandae qui? Voluptate?",
+      type: "text",
+      isDeleted: false,
+      createdAt: "2024-06-20T04:59:15.449Z",
+      updatedAt: "2024-06-20T04:59:15.449Z",
+      conversationId: "9063071e-d6bc-4374-8686-52763e36129d",
+      senderId: "9291d8b2-8ad7-4b7c-8647-1393d5a70dca"
+    },
+    {
+      id: "d18d50fe-89ca-44fd-bc08-513217da6d4a",
+      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro laudantium dolor doloremque soluta omnis molestiae, quod quae perferendis harum iste delectus provident autem impedit aperiam? Impedit animi incidunt aspernatur deleniti fuga, perferendis eaque voluptatibus quia nam inventore expedita ducimus cumque pariatur sequi reprehenderit at in dolor mollitia repudiandae qui? Voluptate?",
+      type: "text",
+      isDeleted: false,
+      createdAt: "2024-06-20T04:59:15.449Z",
+      updatedAt: "2024-06-20T04:59:15.449Z",
+      conversationId: "9063071e-d6bc-4374-8686-52763e36129d",
+      senderId: "9291d8b2-8ad7-4b7c-8647-1393d5a70dca"
+    },
+    {
+      id: "d18d50fe-89ca-44fd-bc08-513217da6d4a",
+      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro laudantium dolor doloremque soluta omnis molestiae, quod quae perferendis harum iste delectus provident autem impedit aperiam? Impedit animi incidunt aspernatur deleniti fuga, perferendis eaque voluptatibus quia nam inventore expedita ducimus cumque pariatur sequi reprehenderit at in dolor mollitia repudiandae qui? Voluptate?",
+      type: "text",
+      isDeleted: false,
+      createdAt: "2024-06-20T04:59:15.449Z",
+      updatedAt: "2024-06-20T04:59:15.449Z",
+      conversationId: "9063071e-d6bc-4374-8686-52763e36129d",
+      senderId: "9291d8b2-8ad7-4b7c-8647-1393d5a70dca"
+    },
+    {
+      id: "d18d50fe-89ca-44fd-bc08-513217da6d4a",
+      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro laudantium dolor doloremque soluta omnis molestiae, quod quae perferendis harum iste delectus provident autem impedit aperiam? Impedit animi incidunt aspernatur deleniti fuga, perferendis eaque voluptatibus quia nam inventore expedita ducimus cumque pariatur sequi reprehenderit at in dolor mollitia repudiandae qui? Voluptate?",
+      type: "text",
+      isDeleted: false,
+      createdAt: "2024-06-20T04:59:15.449Z",
+      updatedAt: "2024-06-20T04:59:15.449Z",
+      conversationId: "9063071e-d6bc-4374-8686-52763e36129d",
+      senderId: "9291d8b2-8ad7-4b7c-8647-1393d5a70dca"
+    },
+    {
+      id: "d18d50fe-89ca-44fd-bc08-513217da6d4a",
+      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro laudantium dolor doloremque soluta omnis molestiae, quod quae perferendis harum iste delectus provident autem impedit aperiam? Impedit animi incidunt aspernatur deleniti fuga, perferendis eaque voluptatibus quia nam inventore expedita ducimus cumque pariatur sequi reprehenderit at in dolor mollitia repudiandae qui? Voluptate?",
+      type: "text",
+      isDeleted: false,
+      createdAt: "2024-06-20T04:59:15.449Z",
+      updatedAt: "2024-06-20T04:59:15.449Z",
+      conversationId: "9063071e-d6bc-4374-8686-52763e36129d",
+      senderId: "9291d8b2-8ad7-4b7c-8647-1393d5a70dca"
+    },
+    {
+      id: "d18d50fe-89ca-44fd-bc08-513217da6d4a",
+      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro laudantium dolor doloremque soluta omnis molestiae, quod quae perferendis harum iste delectus provident autem impedit aperiam? Impedit animi incidunt aspernatur deleniti fuga, perferendis eaque voluptatibus quia nam inventore expedita ducimus cumque pariatur sequi reprehenderit at in dolor mollitia repudiandae qui? Voluptate?",
       type: "text",
       isDeleted: false,
       createdAt: "2024-06-20T04:59:15.449Z",

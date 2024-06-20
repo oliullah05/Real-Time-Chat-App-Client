@@ -18,7 +18,7 @@ dispatch(logOut())
 }
 
     return (
-        <section className="bg-[#FFFFFF]   basis-[5%]">
+        <section className="bg-[#FFFFFF]  p-5">
 
             <div className="h-full flex flex-col justify-between items-center  pb-5">
                 <div className=" w-full py-5">
