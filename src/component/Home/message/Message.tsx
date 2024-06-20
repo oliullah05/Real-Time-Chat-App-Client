@@ -1,13 +1,12 @@
 import MessageHeader from "./MessageHeader";
+import MessageInbox from "./MessageInbox";
 import MessageInput from "./MessageInput";
 
 const Message = () => {
     return (
-        <div className='mt-10 px-8 basis-[75%]'>
+        <div className='mt-10 px-8  basis-9/12 max-w-full'>
             <MessageHeader></MessageHeader>
-            <section className="min-h-[76.5vh] bg-blue-400 mt-4">
-                fg
-            </section>
+             <MessageInbox></MessageInbox>
             <MessageInput></MessageInput>
 
         </div>

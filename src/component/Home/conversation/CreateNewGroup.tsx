@@ -10,7 +10,7 @@ import { useAppDispatch } from "../../../redux/hooks";
 import UsersInGroupModal from "./UsersInGroupModal";
 import { TUser } from "./conversation.type";
 
-const selectedUserId = "b89bd333-e286-47db-9034-ffd35338a9ea"
+
 const CreateNewMessage = () => {
     const [users, setUsers] = useState<TUser[]>([])
     const { data } = useGetUsersWithoutMeForMessageQuery(undefined);
@@ -114,8 +114,8 @@ const CreateNewMessage = () => {
 
     const handleCreateMessage = () => {
         setError("")
-        if (!selectedUserId) {
-            return setError("Please select a user to start a chat.")
+        if (selectedUsersId.length===0) {
+            return setError("Please select some users to start a chat.")
         }
         if (!groupName) {
             return setError("Please enter a valid group name.")

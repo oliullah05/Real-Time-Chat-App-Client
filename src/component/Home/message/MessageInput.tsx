@@ -17,15 +17,15 @@ const MessageInput: React.FC = () => {
         const extension = file.name.split('.').pop()?.toLowerCase();
 
         const fileTypeMap: { [key: string]: string } = {
-            'txt': 'text',
-            // 'rar': 'archive',
-            // 'zip': 'archive',
-            // 'tar': 'archive',
-            // '7z': 'archive',
+            'txt': 'document',
+            'rar': 'archive',
+            'zip': 'archive',
+            'tar': 'archive',
+            '7z': 'archive',
             'doc': 'document',
             'docx': 'document',
             'rtf': 'document',
-            // 'pdf': 'document',
+            'pdf': 'document',
             'jpeg': 'image',
             'jpg': 'image',
             'png': 'image',
@@ -291,7 +291,11 @@ const MessageInput: React.FC = () => {
 .txt
 http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718422439/c2knrzl2ggpdlx1z3leq.txt
 
+.audio
+https://res.cloudinary.com/dvmtzwxci/video/upload/v1718879351/audio_s4byt7.webm
 
+.video
+https://youtu.be/Ag3zMEJtHAA?si=vfWYe4IRMPYoV9aZ
 .pdf
 http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718425987/y5rbvnteyavm7awbpki1.pdf
 
