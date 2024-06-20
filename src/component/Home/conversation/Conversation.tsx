@@ -36,28 +36,31 @@ const Conversation = () => {
                                     {/* avater */}
                                     <div className={`avatar `}>
                                         <div className="w-14 rounded-full">
+
+                                            {/* image  */}
                                             {data.isGroup ?
-                                            
-                                            <> {data.groupPhoto !== null ?
-                                                        <img src={data.groupPhoto} alt="Receiver Profile" /> :
-                                                       <section className="avatar">
-                                                         <img src={groupPhotoAvater} alt="" />
-                                                       </section>
-                                                    } </> :
+
+                                                <> {data.groupPhoto !== null ?
+                                                    <img loading="lazy" src={data.groupPhoto} alt="Receiver Profile" /> :
+                                                    <section className="avatar">
+                                                        <img loading="lazy" src={groupPhotoAvater} alt="" />
+                                                    </section>
+                                                } </> :
 
                                                 <>
-                                                   
+
                                                     {data.receiverProfilePhoto !== null ?
-                                                        <img src={data.receiverProfilePhoto} alt="Receiver Profile" /> :
-                                                       <section className="avatar">
-                                                         <div className=" w-14 h-14 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                                                            <svg className=" text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-                                                        </div>
-                                                       </section>
+                                                        <img loading="lazy" src={data.receiverProfilePhoto} alt="Receiver Profile" /> :
+                                                        <section className="avatar">
+                                                            <div className=" w-14 h-14 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                                                                <svg className=" text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                                                            </div>
+                                                        </section>
                                                     }
                                                 </>
-
                                             }
+                                            {/* image end */}
+
                                         </div>
                                     </div>
 
