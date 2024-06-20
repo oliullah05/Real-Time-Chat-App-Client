@@ -662,7 +662,7 @@ export const dummyMessageData:any = [
     },
     {
       id: "51",
-      message: "http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718441183/0xe1au9pg3yk2t5rbzln.txt",
+      message: "https://res.cloudinary.com/dvmtzwxci/raw/upload/v1718910023/MY_ALL_NOTES_bajyod.txt",
       type: "document",
       isDeleted: false,
       createdAt: "2024-06-20T04:59:15.449Z",

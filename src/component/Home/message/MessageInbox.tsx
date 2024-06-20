@@ -53,6 +53,36 @@ const MessageInbox = () => {
 
 
 
+
+
+    // for downloading all files
+
+    const downloadFileAtURL = (url: string) => {
+        const fileName = "any.txt";
+        fetch(url)
+            .then(response => response.blob())
+            .then(blob => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const dataURL = reader.result as string; // Cast result to string
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    a.href = dataURL;
+                    a.download = fileName;
+                    a.click();
+                    window.URL.revokeObjectURL(dataURL);
+                    document.body.removeChild(a);
+                };
+                reader.readAsDataURL(blob);
+            })
+            .catch(error => console.error('Download failed', error));
+    };
+    
+
+    
+
+
     return (
 
         <section className="min-h-[76.5vh] max-h-[76.5vh] overflow-y-auto overflow-hidden custom-scrollbar mt-4 ">
@@ -104,11 +134,13 @@ const MessageInbox = () => {
 
 
                             {/* for document */}
-                         {/* { data.type==="document" && <iframe
-                                src={data.message}
-                                className="bg-red-200 w-full"
 
-                            />} */}
+                            {(data.type === "document" || data.type==="code"||data.type=="web") && data.id=="51" && <div>
+                                {/* <FaFileAlt /> */}
+                                {/* http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718423938/ugn6sqmhi3hqmchk88mn.zip */}
+                                <button className="p- btn btn-primary" onClick={() => downloadFileAtURL(data.message)}>Download Rar</button>
+                                {/* <button className="p-5 btn" onClick={downloadFile}>Download  2</button> */}
+                            </div>}
                             {/* for document */}
 
 

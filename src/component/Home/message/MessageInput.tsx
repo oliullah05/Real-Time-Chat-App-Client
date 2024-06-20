@@ -56,7 +56,7 @@ const MessageInput: React.FC = () => {
             'scss': 'web',
             'xhtml': 'web',
             'xml': 'web',
-            'json': 'web',
+            'json': 'document',
             // Add other file types as needed
         };
 
@@ -175,6 +175,9 @@ const MessageInput: React.FC = () => {
     //     }
     //   };
 
+    
+
+
     // const downloadFileAtURL = (url) => {
     //     const fileName = "any.pdf";
     //     fetch(url)
@@ -237,6 +240,7 @@ const MessageInput: React.FC = () => {
                 ref={fileInputRef}
                 className="hidden"
                 onChange={handleFileChange}
+                accept=".txt,.doc,.docx,.rtf,.jpeg,.jpg,.png,.gif,.heif,.webp,.aac,.mp3,.wav,.amv,.mpeg,.mp4,.flv,.avi,.webm,.c,.cpp,.h,.hpp,.java,.py,.js,.ts,.html,.htm,.asp,.css,.scss,.xhtml,.xml,.json"
             />
 
             <button
@@ -276,8 +280,8 @@ const MessageInput: React.FC = () => {
             <div>
                 {/* <FaFileAlt /> */}
                 {/* http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718423938/ugn6sqmhi3hqmchk88mn.zip */}
-                {/* <button className="p-5 btn" onClick={()=>downloadFileAtURL("http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718430078/np98pdltouyf6jhmeqvt.html")}>Download Rar</button> */}
-                {/* <button className="p-5 btn" onClick={downloadFile}>Download  2</button> */}
+                {/* <button className="p-5 btn" onClick={()=>downloadFileAtURL("http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718430078/np98pdltouyf6jhmeqvt.html")}>Download Rar</button>
+                <button className="p-5 btn" onClick={downloadFile}>Download  2</button> */}
             </div>
 
 
