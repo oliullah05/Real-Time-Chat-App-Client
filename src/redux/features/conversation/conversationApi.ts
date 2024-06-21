@@ -1,5 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../../api/baseApi";
-
+type TConversation = {
+    id: string;
+    lastMessage: string;
+    participants: string;
+    isGroup: boolean;
+    groupName: string | null;
+    groupPhoto: string | null;
+    isDeleted: boolean;
+    updatedAt: string | Date,
+    createdAt: string
+    conversationsUsers: {
+        userId: string;
+        conversationId: string;
+        user: {
+            profilePhoto: string;
+            name: string;
+            id: string;
+        };
+    }[];
+};
 const conversationApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getMyConversations: builder.query({
@@ -36,8 +56,66 @@ const conversationApi = baseApi.injectEndpoints({
                     body: payload
                 }
             },
-            // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-            // }
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                // optimistic chache update 
+
+                const patchResultForEdit = dispatch(baseApi.util.updateQueryData(
+                    "getMyConversations" as never,
+                    null as never,
+                    (draft: { data: TConversation[] }) => {
+                        const allConversations: TConversation[] = draft.data;
+
+                        // do sort participents
+                        const participants = arg.participants;
+                        const participantsArray = participants.split('/');
+                        const sortedParticipantsArray = participantsArray.sort();
+                        const sortedParticipants = sortedParticipantsArray.join('/');
+
+                        // find conversation
+                        const getSelectedConversation = allConversations.find(conversation => conversation.participants === sortedParticipants)
+
+                        if (getSelectedConversation) {
+                            getSelectedConversation.lastMessage = arg.lastMessage;
+                            getSelectedConversation.updatedAt = new Date().toISOString();
+                            
+                            draft.data = allConversations.sort((a, b) => 
+                                new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+                            );
+                        }
+                    }
+                ))
+
+                try {
+                    const res = await queryFulfilled;
+                   
+                    if (res.data.statusCode === 201) {
+                       dispatch(baseApi.util.updateQueryData(
+                            "getMyConversations" as never,
+                            null as never,
+                            (draft: { data: TConversation[] }) => {
+
+                                // find conversation
+                                draft.data.push(res.data.data)
+                                 
+                            draft.data = draft.data.sort((a, b) => 
+                                new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+                            );
+
+
+                            }
+                        ))
+                    }
+
+
+
+                }
+                catch (err) {
+                    patchResultForEdit.undo()
+                }
+
+
+
+            }
         },
         ),
 
