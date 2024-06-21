@@ -1,11 +1,14 @@
 import { useEffect, useRef } from "react";
-import { dummyMessageData } from "./message.const";
+import { FaFile } from "react-icons/fa6";
+import { useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { useGetMyMessagesByConversationIdQuery } from "../../../redux/features/message/messageApi";
 interface TMessage {
     id: string;
     message: string;
     type: string;
     fileName: string
+    fileSize:string
     isDeleted: boolean;
     createdAt: string;
     updatedAt: string;
@@ -13,33 +16,9 @@ interface TMessage {
     senderId: string;
 }
 const MessageInbox = () => {
+    const {conversationId} = useParams()
 
-    // return (
-    //     <section className="min-h-[76.5vh] max-h-[76.5vh] overflow-y-auto overflow-hidden custom-scrollbar mt-4 ">
-
-    //        <div className="  mt-5">
-    //        {
-    //             dummyMessageData.slice(0, 10).map((data: TMessage, index) => 
-    //             <section className={` flex  ${index % 2 == 0 ? "justify-end " : " justify-start"}`} >
-    //                 {/* ${index%2===0?"text-left":"text-right"} */}
-    //                 {<div className={`max-w-[70%] `}>
-    //                     <p className={` 
-    //                         ${data.message.length < 113 ? "w-max" : ""} px-4 py-2 my-5 rounded-lg   ${index % 2 == 0 ? " bg-[#CDCDCD] " : " bg-[#FFFFFF]"}
-    //                         `}
-
-
-    //                         >{data.message}</p>
-    //                 </div>
-
-    //                 }
-    //             </section>
-    //             )
-    //         }
-    //        </div>
-
-    //     </section>
-    // );
-
+  const {data:myConversations,isLoading}= useGetMyMessagesByConversationIdQuery(conversationId)
 
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -54,7 +33,14 @@ const MessageInbox = () => {
     }, []);
 
 
+    if(isLoading){
+        return <p className="min-h-[76.5vh] max-h-[76.5vh]  mt-4 flex justify-center items-center"><div className="loading loading-spinner  md:w-[5rem] w-[5rem]"></div></p>
+    }
 
+    if(myConversations?.data?.length==0){
+        return <p className="min-h-[76.5vh] max-h-[76.5vh]  mt-4 flex justify-center items-center"><span className="text-3xl">No conversation found</span></p>
+    }
+    
 
 
     // for downloading all files
@@ -82,9 +68,9 @@ const MessageInbox = () => {
 
 
 
-    // better downloding all file function if needed
+    // better downloding all file function if needed    // dont delete this comment
 
-    //  const downloadFileAtURL = (fileUrl: string,fileName:string) => {
+    //  const downloadFileAtURL = (fileUrl: string,fileName:string) => {               
     //         fetch(fileUrl)
     //             .then(response => {
 
@@ -117,15 +103,15 @@ const MessageInbox = () => {
 
 
                 {
-                    dummyMessageData.map((data: TMessage, index: number) =>
-                        <section className={` flex  ${index % 2 == 0 ? "justify-end " : " justify-start"}`} >
+                   myConversations?.data?.map((data: TMessage, index: number) =>
+                        <section className={` flex  ${index % 2 === 0 ? "justify-end " : " justify-start"}`} >
                             {/* ${index%2===0?"text-left":"text-right"} */}
 
 
 
 
                             {/* for text message*/}
-                            {/* {
+                            {
                                 data.type === "text" && <div className={`max-w-[70%] `}>
                                     <p className={` 
                                 ${data.message.length < 113 ? "w-max" : ""} px-4 py-2 my-5 rounded-lg   ${index % 2 == 0 ? " bg-[#CDCDCD] " : " bg-[#FFFFFF] "}
@@ -133,7 +119,7 @@ const MessageInbox = () => {
                                     >{data.message}</p>
                                 </div>
 
-                            } */}
+                            }
                             {/*   text message end */}
 
 
@@ -158,15 +144,9 @@ const MessageInbox = () => {
 
 
 
-
-
-
-
-
-
                             {/* for audio  */}
 
-                            {/* {data.type === "audio" && <div className={`max-w-[70%] `}>
+                            {/* {(data.type === "audio" || data.type==="voice") && <div className={`max-w-[70%] `}>
                                 <audio className={` 
                                  px-4 py-2 my-5 rounded-lg   ${index % 2 == 0 ? " bg-[#CDCDCD]" : " bg-[#FFFFFF]"}
                                 `} src={data.message} controls></audio>
@@ -175,6 +155,10 @@ const MessageInbox = () => {
                             } */}
 
                             {/* audio end
+
+
+
+
 
                             {/* for video  */}
 
@@ -189,19 +173,37 @@ const MessageInbox = () => {
                             {/* video end */}
 
 
-                            {/* for document */}
 
-                            {(data.type === "document" ||
+
+
+                            {/* for document start*/}
+
+                            {
+                            (data.type === "document" ||
                                 data.type === "code" ||
                                 data.type == "web" ||
                                 data.type === "data" ||
                                 data.type === "script")
-                                && data.id == "4" && <div>
-                                    {/* <FaFileAlt /> */}
-                                    {/* http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718423938/ugn6sqmhi3hqmchk88mn.zip */}
-                                    <button className="p- btn btn-primary" onClick={() => downloadFileAtURL(data.message, data.fileName)}>Download Rar</button>
-                                    {/* <button className="p-5 btn" onClick={downloadFile}>Download  2</button> */}
-                                </div>}
+                                && data.id == "4" && 
+
+                                 
+                                    <div className={`max-w-[70%] `}>
+                                        <div className={`px-4 ${data.fileName.length < 113 ? "" : "w-max"} pt-2 pb-3 flex gap-4 justify-between items-center my-5 rounded-lg ${index % 2 == 0 ? "  bg-[#5b97f7ba] text-[#FFFFFF]" : " bg-[#FFFFFF] "}`}
+                                     
+                                        >
+                                            <div>
+
+                                                <FaFile className="h-12 w-12" />
+
+                                            </div>
+                                            <div className="flex justify-center items-center flex-col">
+                                                <p className="mb-2 font-bold text-xl">{data.fileName}{data.fileSize}</p>
+                                                <p onClick={()=>downloadFileAtURL(data.message,data.fileName)} className="btn h-[1rem]">Download</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
                             {/* for document */}
 
 

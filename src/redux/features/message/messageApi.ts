@@ -3,12 +3,12 @@ import { baseApi } from "../../api/baseApi";
 
 const messageApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        // getMyConversations: builder.query({
-        //     query: () => ({
-        //         url: "/conversation/my-conversations",
-        //         method: "GET"
-        //     })
-        // }),
+        getMyMessagesByConversationId: builder.query({
+            query: (conversationId) => ({
+                url: `/message/conversationId/${conversationId}`,
+                method: "GET"
+            })
+        }),
     
         createMessage: builder.mutation({
             query: (payload: {
@@ -31,6 +31,6 @@ const messageApi = baseApi.injectEndpoints({
 })
 
 
-export const { useCreateMessageMutation } = messageApi
+export const { useCreateMessageMutation,useGetMyMessagesByConversationIdQuery } = messageApi
 
 export default messageApi.endpoints;

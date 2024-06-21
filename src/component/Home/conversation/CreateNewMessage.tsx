@@ -91,6 +91,7 @@ const CreateNewMessage = () => {
         // find conversation exits or not
         const payload = {
             lastMessage: message,
+            lastMessageType:"text",
             participants,
             conversationsUsers: [
                 {

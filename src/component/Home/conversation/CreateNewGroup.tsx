@@ -142,12 +142,14 @@ const CreateNewMessage = () => {
             lastMessage: string,
             participants: string,
             isGroup: boolean,
+            lastMessageType:string,
             groupName?: string,
             groupPhoto?: string,
             conversationsUsers: { userId: string }[]
         } = {
             lastMessage: message,
             isGroup: true,
+            lastMessageType:"text",
             participants,
             conversationsUsers
         }
@@ -161,7 +163,7 @@ const CreateNewMessage = () => {
 
 
 
-        dispatch(conversationApi.createGroupConversationThenSlientlyCreateMessage.initiate(payload)).unwrap().then((res) => {
+        dispatch(conversationApi.createGroupConversationThenSlientlyCreateMessage.initiate(payload)).unwrap().then((res:any) => {
             if (res.statusCode === 201) {
                 toast.success("Group created successfully")
                 
