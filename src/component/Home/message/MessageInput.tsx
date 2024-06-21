@@ -18,29 +18,19 @@ const MessageInput: React.FC = () => {
 
         const fileTypeMap: { [key: string]: string } = {
             'txt': 'document',
-            'rar': 'archive',
-            'zip': 'archive',
-            'tar': 'archive',
-            '7z': 'archive',
             'doc': 'document',
             'docx': 'document',
             'rtf': 'document',
-            'pdf': 'document',
-            'jpeg': 'image',
-            'jpg': 'image',
-            'png': 'image',
-            'gif': 'image',
-            'heif': 'image',
-            'webp': 'image',
-            'aac': 'audio',
-            'mp3': 'audio',
-            'wav': 'audio',
-            'amv': 'video',
-            'mpeg': 'video',
-            'mp4': 'video',
-            'flv': 'video',
-            'avi': 'video',
-            'webm': 'video',
+            'json': 'document',
+            'ini': 'document',
+            'log': 'document',
+            'md': 'document',
+            'bat': 'script',
+            'sh': 'script',
+            'php': 'code',
+            'rb': 'code',
+            'swift': 'code',
+            'go': 'code',
             'c': 'code',
             'cpp': 'code',
             'h': 'code',
@@ -49,20 +39,52 @@ const MessageInput: React.FC = () => {
             'py': 'code',
             'js': 'code',
             'ts': 'code',
+            'tsx': 'code',
+            'jsx': 'code',
             'html': 'web',
             'htm': 'web',
             'asp': 'web',
             'css': 'web',
-            'sql':'web',
             'scss': 'web',
             'xhtml': 'web',
             'xml': 'web',
-            'json': 'document',
-            // Add other file types as needed
+            'sql': 'web',
+            'yaml': 'data',
+            'yml': 'data',
+            'jpeg': 'image',
+            'jpg': 'image',
+            'png': 'image',
+            'gif': 'image',
+            'heif': 'image',
+            'webp': 'image',
+            'psd': 'image',
+            'ai': 'image',
+            'eps': 'image',
+            'svg': 'image',
+            'tiff': 'image',
+            'bmp': 'image',
+            'aac': 'audio',
+            'mp3': 'audio',
+            'wav': 'audio',
+            'ogg': 'audio',
+            'flac': 'audio',
+            'm4a': 'audio',
+            'amv': 'video',
+            'mpeg': 'video',
+            'mp4': 'video',
+            'flv': 'video',
+            'avi': 'video',
+            'webm': 'video',
+            '3gp': 'video',
+            'mkv': 'video',
+            'mov': 'video',
+            'jsp': 'web',
+
         };
 
         return fileTypeMap[extension || ''] || 'unknown';
     };
+
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
@@ -156,78 +178,8 @@ const MessageInput: React.FC = () => {
         handleAudioUpload(blob);
     };
 
-                                                                                    // all extra work
-    // const handleDownload = async (url: string) => {
-    //     try {
-    //       const response = await fetch(url);
-    //       const blob = await response.blob();
-
-    //       // Create a link element
-    //       const link = document.createElement('a');
-    //       link.href = URL.createObjectURL(blob);
-    //       link.download = "downloaded_file.zip";
-    //       document.body.appendChild(link);
-    //       link.click();
-    //       document.body.removeChild(link);
-    //       toast.success("File Downloaded Successfully");
-    //     } catch (error) {
-    //       console.error('Error downloading file:', error);
-    //       toast.error("Failed to download file");
-    //     }
-    //   };
-
-    
 
 
-    // const downloadFileAtURL = (url) => {
-    //     const fileName = "any.pdf";
-    //     fetch(url)
-    //         .then(response => response.blob())
-    //         .then(blob => {
-    //             const reader = new FileReader();
-    //             reader.onload = () => {
-    //                 const a = document.createElement('a');
-    //                 a.style.display = 'none';
-    //                 document.body.appendChild(a);
-    //                 a.href = reader.result;
-    //                 a.download = fileName;
-    //                 a.click();
-    //                 window.URL.revokeObjectURL(reader.result);
-    //                 document.body.removeChild(a);
-    //             };
-    //             reader.readAsDataURL(blob);
-    //         })
-    //         .catch(error => console.error('Download failed', error));
-    // };
-
-                                                                    // final function
-
-                                                                    
-
-    // const downloadFile = () => {
-    //     const fileUrl = "https://www.dropbox.com/scl/fi/2ymocgzv2gbrwt8yryrxx/Oli-Nid.pdf?rlkey=u88jbg8berdb0njxosx99aum2&st=6u4ary5c&dl=0";
-
-    //     fetch(fileUrl)
-    //         .then(response => {
-    //             console.log({ response });
-    //             if (!response.ok) {
-    //                 throw new Error('Network response was not ok');
-    //             }
-    //             return response.blob();
-    //         })
-    //         .then(blob => {
-    //             const url = window.URL.createObjectURL(new Blob([blob]));
-    //             const link = document.createElement('a');
-    //             link.href = url;
-    //             link.setAttribute('download', 'download.pdf'); // Set your desired file name here
-    //             document.body.appendChild(link);
-    //             link.click();
-    //             link.parentNode.removeChild(link);
-    //              // Clean up the URL object
-    //              window.URL.revokeObjectURL(url);
-    //         })
-    //         .catch(error => console.error('Error downloading file:', error));
-    // };
     return (
         <section className="py-2 relative">
             <input
@@ -238,11 +190,11 @@ const MessageInput: React.FC = () => {
 
             <input
                 type="file"
+                multiple={false}
                 ref={fileInputRef}
                 className="hidden"
                 onChange={handleFileChange}
-                accept=".txt,.doc,.docx,.rtf,.jpeg,.jpg,.png,.gif,.heif,.webp,.aac,.mp3,.wav,.amv,.mpeg,.mp4,.flv,.avi,.webm,.c,.cpp,.h,.hpp,.java,.py,.js,.ts,.html,.htm,.asp,.css,.scss,.xhtml,.xml,.json,.sql"
-                
+                accept=".txt,.doc,.docx,.rtf,.jpeg,.jpg,.png,.gif,.heif,.webp,.aac,.mp3,.wav,.amv,.mpeg,.mp4,.flv,.avi,.webm,.c,.cpp,.h,.hpp,.java,.py,.js,.ts,.html,.htm,.asp,.css,.scss,.xhtml,.xml,.json,.sql,.bat,.sh,.php,.rb,.swift,.go,.psd,.ai,.eps,.svg,.tiff,.bmp,.3gp,.mkv,.mov,.ogg,.flac,.m4a,.ini,.log,.md,.yml,.yaml,.jsp,.tsx,.jsx"
             />
 
             <button

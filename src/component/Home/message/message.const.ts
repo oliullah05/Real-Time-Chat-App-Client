@@ -123,9 +123,9 @@ export const dummyMessageData: any = [
   },
   {
     id: "4",
-    message: "http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718430876/xe5nc36zutaufdxy75lj.zip",
+    message: "https://res.cloudinary.com/dvmtzwxci/raw/upload/v1718956095/yaml_santlp.yaml",
     type: "document",
-    fileName: "document.zip",
+    fileName: "sh.yaml",
     isDeleted: false,
     createdAt: "2024-06-20T04:59:15.449Z",
     updatedAt: "2024-06-20T04:59:15.449Z",
