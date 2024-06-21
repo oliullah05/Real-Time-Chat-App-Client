@@ -4,6 +4,7 @@ interface TMessage {
     id: string;
     message: string;
     type: string;
+    fileName:string
     isDeleted: boolean;
     createdAt: string;
     updatedAt: string;
@@ -57,8 +58,7 @@ const MessageInbox = () => {
 
     // for downloading all files
 
-    const downloadFileAtURL = (url: string) => {
-        const fileName = "any.txt";
+    const downloadFileAtURL = (url: string,fileName:string) => {
         fetch(url)
             .then(response => response.blob())
             .then(blob => {
@@ -69,7 +69,7 @@ const MessageInbox = () => {
                     a.style.display = 'none';
                     document.body.appendChild(a);
                     a.href = dataURL;
-                    a.download = fileName;
+                    a.download = fileName as string;
                     a.click();
                     window.URL.revokeObjectURL(dataURL);
                     document.body.removeChild(a);
@@ -99,15 +99,16 @@ const MessageInbox = () => {
 
 
                             {/* for text message*/}
-                            {data.type === "text" && <div className={`max-w-[70%] `}>
-                                <p className={` 
+                            {/* {
+                                data.type === "text" && <div className={`max-w-[70%] `}>
+                                    <p className={` 
                                 ${data.message.length < 113 ? "w-max" : ""} px-4 py-2 my-5 rounded-lg   ${index % 2 == 0 ? " bg-[#CDCDCD] " : " bg-[#FFFFFF] "}
                                 `}
-                                >{data.message}</p>
-                            </div>
+                                    >{data.message}</p>
+                                </div>
 
-                            }
-  {/*   text message end */}
+                            } */}
+                            {/*   text message end */}
 
 
 
@@ -115,13 +116,16 @@ const MessageInbox = () => {
 
                             {/* for image */}
 
-
-                            {data.type === "image" && <div className={`max-w-[70%] `}>
+{/* 
+                            {
+                            data.type === "image" && <div className={`max-w-[70%] `}>
                                 <img className={` glass
                                  px-4 py-2 my-5 rounded-lg  
                                 `} src={data.message} ></img>
                             </div>
-                            }
+                            } */}
+
+
                             {/* for image end */}
 
 
@@ -132,7 +136,7 @@ const MessageInbox = () => {
 
 
 
-                          
+
 
                             {/* for audio  */}
 
@@ -148,22 +152,23 @@ const MessageInbox = () => {
 
                             {/* for video  */}
 
-                            {data.type === "video" && <div className={`max-w-[70%] `}>
+                            {/* {
+                            data.type === "video" && <div className={`max-w-[70%] `}>
                                 <video className={` w-96
                                  px-4 py-2 my-5 rounded-lg   ${index % 2 == 0 ? " bg-[#CDCDCD]" : " bg-[#FFFFFF]"}
                                 `} src={data.message} controls></video>
                             </div>
-                            }
+                            } */}
 
                             {/* video end */}
 
 
                             {/* for document */}
 
-                            {(data.type === "document" || data.type === "code" || data.type == "web") && data.id == "51" && <div>
+                            {(data.type === "document" || data.type === "code" || data.type == "web") && data.id == "4" && <div>
                                 {/* <FaFileAlt /> */}
                                 {/* http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718423938/ugn6sqmhi3hqmchk88mn.zip */}
-                                <button className="p- btn btn-primary" onClick={() => downloadFileAtURL(data.message)}>Download Rar</button>
+                                <button className="p- btn btn-primary" onClick={() => downloadFileAtURL(data.message,data.fileName)}>Download Rar</button>
                                 {/* <button className="p-5 btn" onClick={downloadFile}>Download  2</button> */}
                             </div>}
                             {/* for document */}

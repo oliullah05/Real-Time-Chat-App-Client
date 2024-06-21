@@ -53,6 +53,7 @@ const MessageInput: React.FC = () => {
             'htm': 'web',
             'asp': 'web',
             'css': 'web',
+            'sql':'web',
             'scss': 'web',
             'xhtml': 'web',
             'xml': 'web',
@@ -240,7 +241,8 @@ const MessageInput: React.FC = () => {
                 ref={fileInputRef}
                 className="hidden"
                 onChange={handleFileChange}
-                accept=".txt,.doc,.docx,.rtf,.jpeg,.jpg,.png,.gif,.heif,.webp,.aac,.mp3,.wav,.amv,.mpeg,.mp4,.flv,.avi,.webm,.c,.cpp,.h,.hpp,.java,.py,.js,.ts,.html,.htm,.asp,.css,.scss,.xhtml,.xml,.json"
+                accept=".txt,.doc,.docx,.rtf,.jpeg,.jpg,.png,.gif,.heif,.webp,.aac,.mp3,.wav,.amv,.mpeg,.mp4,.flv,.avi,.webm,.c,.cpp,.h,.hpp,.java,.py,.js,.ts,.html,.htm,.asp,.css,.scss,.xhtml,.xml,.json,.sql"
+                
             />
 
             <button
