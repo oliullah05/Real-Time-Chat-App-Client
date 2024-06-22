@@ -77,8 +77,8 @@ const conversationApi = baseApi.injectEndpoints({
                         if (getSelectedConversation) {
                             getSelectedConversation.lastMessage = arg.lastMessage;
                             getSelectedConversation.updatedAt = new Date().toISOString();
-                            
-                            draft.data = allConversations.sort((a, b) => 
+
+                            draft.data = allConversations.sort((a, b) =>
                                 new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
                             );
                         }
@@ -87,19 +87,19 @@ const conversationApi = baseApi.injectEndpoints({
 
                 try {
                     const res = await queryFulfilled;
-                   
+
                     if (res.data.statusCode === 201) {
-                       dispatch(baseApi.util.updateQueryData(
+                        dispatch(baseApi.util.updateQueryData(
                             "getMyConversations" as never,
                             null as never,
                             (draft: { data: TConversation[] }) => {
 
                                 // find conversation
                                 draft.data.push(res.data.data)
-                                 
-                            draft.data = draft.data.sort((a, b) => 
-                                new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-                            );
+
+                                draft.data = draft.data.sort((a, b) =>
+                                    new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+                                );
 
 
                             }
@@ -135,8 +135,27 @@ const conversationApi = baseApi.injectEndpoints({
                     body: payload
                 }
             },
-            // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-            // }
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                const res: any = await queryFulfilled;
+              
+                if (res.data.statusCode === 201) {
+                    dispatch(baseApi.util.updateQueryData(
+                        "getMyConversations" as never,
+                        null as never,
+                        (draft: { data: TConversation[] }) => {
+
+                            // find conversation
+                            draft.data.push(res.data.data)
+
+                            draft.data = draft.data.sort((a, b) =>
+                                new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+                            );
+
+
+                        }
+                    ))
+                }
+            }
         },
         ),
 
