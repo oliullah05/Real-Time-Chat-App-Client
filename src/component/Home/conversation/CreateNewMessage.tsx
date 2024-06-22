@@ -8,6 +8,7 @@ import conversationApi from "../../../redux/features/conversation/conversationAp
 import userApi, { useGetUsersWithoutMeForMessageQuery } from "../../../redux/features/user/userApi";
 import { useAppDispatch } from "../../../redux/hooks";
 import { TUser } from "./conversation.type";
+import { useParams } from "react-router-dom";
 
 
 const CreateNewMessage = () => {
@@ -21,7 +22,7 @@ const CreateNewMessage = () => {
     const [error, setError] = useState("")
     const dispatch = useAppDispatch()
     const loggedInUser = useCurrentUser()
-
+  const {conversationId}=useParams()
 
 
     useEffect(() => {
@@ -102,7 +103,7 @@ const CreateNewMessage = () => {
                 },
             ]
         }
-        dispatch(conversationApi.createOrUpdateConversationThenSlientlyCreateMessage.initiate(payload)).unwrap().then((res) => {
+        dispatch(conversationApi.createOrUpdateConversationThenSlientlyCreateMessage.initiate({payload,conversationId})).unwrap().then((res) => {
             if (res.statusCode === 201) {
                 toast.success("Message created successfully")
             }

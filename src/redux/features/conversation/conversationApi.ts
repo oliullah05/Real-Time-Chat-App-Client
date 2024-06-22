@@ -41,32 +41,34 @@ const conversationApi = baseApi.injectEndpoints({
         //     })
         // }),
         createOrUpdateConversationThenSlientlyCreateMessage: builder.mutation({
-            query: (payload: {
-                lastMessage: string,
-                participants: string,
-                isGroup?: boolean,
-                groupName?: string,
-                groupPhoto?: string,
-                conversationsUsers: { userId: string }[]
+            query: (data: {
+                payload: {
+                    lastMessage: string,
+                    participants: string,
+                    isGroup?: boolean,
+                    groupName?: string,
+                    groupPhoto?: string,
+                    conversationsUsers: { userId: string }[]
+                }, conversationId: string | undefined
             }) => {
 
                 return {
                     url: `/conversation/create-or-update-conversation-then-sliently-create-message`,
                     method: "POST",
-                    body: payload
+                    body: data.payload
                 }
             },
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
                 // optimistic chache update 
 
-                const patchResultForEdit = dispatch(baseApi.util.updateQueryData(
+                const cacheUpdateForEditConversation = dispatch(baseApi.util.updateQueryData(
                     "getMyConversations" as never,
                     null as never,
                     (draft: { data: TConversation[] }) => {
                         const allConversations: TConversation[] = draft.data;
 
                         // do sort participents
-                        const participants = arg.participants;
+                        const participants = arg.payload.participants;
                         const participantsArray = participants.split('/');
                         const sortedParticipantsArray = participantsArray.sort();
                         const sortedParticipants = sortedParticipantsArray.join('/');
@@ -75,27 +77,51 @@ const conversationApi = baseApi.injectEndpoints({
                         const getSelectedConversation = allConversations.find(conversation => conversation.participants === sortedParticipants)
 
                         if (getSelectedConversation) {
-                            getSelectedConversation.lastMessage = arg.lastMessage;
+                            getSelectedConversation.lastMessage = arg.payload.lastMessage;
                             getSelectedConversation.updatedAt = new Date().toISOString();
-
                             draft.data = allConversations.sort((a, b) =>
                                 new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
                             );
                         }
+
                     }
                 ))
 
+
+                const optimisticMessageUpdateInCache = dispatch(baseApi.util.updateQueryData("getMyMessagesByConversationId" as never, arg.conversationId as never, (draft: any) => {
+                    const message = arg.payload.lastMessage;
+
+
+                    if (draft) {
+                        draft.data.push({ message, type: "text" })
+                    }
+                }))
+
+
                 try {
-                    const res = await queryFulfilled;
+                    const res: any = await queryFulfilled;
+                    if (res.data.statusCode === 200) {
+                        // update message cache
+
+                        dispatch(baseApi.util.updateQueryData("getMyMessagesByConversationId" as never, arg.conversationId as never, (draft: any) => {
+
+                            if (draft) {
+                                optimisticMessageUpdateInCache.undo()
+                                draft.data.push(res.data.data.message)
+                            }
+                        }))
+                    }
+
+
 
                     if (res.data.statusCode === 201) {
                         dispatch(baseApi.util.updateQueryData(
                             "getMyConversations" as never,
                             null as never,
                             (draft: { data: TConversation[] }) => {
-
                                 // find conversation
-                                draft.data.push(res.data.data)
+                                console.log(res);
+                                draft.data.push(res.data.data.conversation)
 
                                 draft.data = draft.data.sort((a, b) =>
                                     new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
@@ -104,13 +130,15 @@ const conversationApi = baseApi.injectEndpoints({
 
                             }
                         ))
+
                     }
 
 
 
                 }
                 catch (err) {
-                    patchResultForEdit.undo()
+                    cacheUpdateForEditConversation.undo()
+                    optimisticMessageUpdateInCache.undo()
                 }
 
 
@@ -137,7 +165,7 @@ const conversationApi = baseApi.injectEndpoints({
             },
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
                 const res: any = await queryFulfilled;
-              
+
                 if (res.data.statusCode === 201) {
                     dispatch(baseApi.util.updateQueryData(
                         "getMyConversations" as never,
