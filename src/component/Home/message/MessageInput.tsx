@@ -10,7 +10,7 @@ const MessageInput: React.FC = () => {
     const { conversationId } = useParams()
     const [message, setMessage] = useState("")
     const dispatch = useAppDispatch()
-
+    const [isVoiceUploading, setIsVoiceUploading] = useState(false)
     // upload file functions
     const fileInputRef = useRef<HTMLInputElement>(null);
     const handleFileIconClick = () => {
@@ -144,6 +144,7 @@ const MessageInput: React.FC = () => {
     // upload voice messages functions
     const handleAudioUpload = async (audioFile: File) => {
         if (audioFile) {
+            setIsVoiceUploading(true)
             const data = new FormData();
             data.append("file", audioFile);
             data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
@@ -159,13 +160,22 @@ const MessageInput: React.FC = () => {
 
                 const cloudData = await res.json();
                 if (cloudData.url) {
-                    console.log(cloudData.url)
+                    setIsVoiceUploading(false)
                     toast.success("Voice Upload Successfully");
+                    const sendMessagePayload = {
+                        payload: {
+                            lastMessage: cloudData?.url,
+                            lastMessageType: "voice",
+                            conversationId
+                        }
+                    }
+                    dispatch(conversationApi.updateConversationThenSlientlyCreateMessage.initiate(sendMessagePayload)).unwrap()
                 } else {
+                    setIsVoiceUploading(false)
                     toast.error(cloudData.error.message);
                 }
             } catch (error) {
-                console.log(error);
+                setIsVoiceUploading(false)
             }
         }
 
@@ -173,8 +183,10 @@ const MessageInput: React.FC = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const addAudioElement = (blob: any) => {
+
         const url = URL.createObjectURL(blob);
         const audio = document.createElement("audio");
+        audio.className="hidden"
         audio.src = url;
         audio.controls = true;
         document.body.appendChild(audio);
@@ -197,64 +209,69 @@ const MessageInput: React.FC = () => {
 
 
     return (
-        <section className="py-2 relative">
-            <input
-                onChange={(e) => setMessage(e.target.value)}
-                type="text"
-                placeholder="Write a message"
-                className="h-[4rem] focus:outline-none rounded-md p-6 w-full bg-[#FFFFFF]"
-            />
+        <>
+            {isVoiceUploading && <div className="text-center relative"><span className="loading loading-spinner loading-lg absolute -mt-12"></span></div>}
+            <section className="py-2 relative">
+                <input
+                    onChange={(e) => setMessage(e.target.value)}
+                    type="text"
+                    placeholder="Write a message"
+                    className="h-[4rem] focus:outline-none rounded-md p-6 w-full bg-[#FFFFFF]"
+                />
 
-            <input
-                type="file"
-                multiple={false}
-                ref={fileInputRef}
-                className="hidden"
-                onChange={handleFileChange}
-                accept=".txt,.doc,.docx,.rtf,.jpeg,.jpg,.png,.gif,.heif,.webp,.aac,.mp3,.wav,.amv,.mpeg,.mp4,.flv,.avi,.webm,.c,.cpp,.h,.hpp,.java,.py,.js,.ts,.html,.htm,.asp,.css,.scss,.xhtml,.xml,.json,.sql,.bat,.sh,.php,.rb,.swift,.go,.psd,.ai,.eps,.svg,.tiff,.bmp,.3gp,.mkv,.mov,.ogg,.flac,.m4a,.ini,.log,.md,.yml,.yaml,.jsp,.tsx,.jsx"
-            />
+                <input
+                    type="file"
+                    multiple={false}
+                    ref={fileInputRef}
+                    className="hidden"
+                    onChange={handleFileChange}
+                    accept=".txt,.doc,.docx,.rtf,.jpeg,.jpg,.png,.gif,.heif,.webp,.aac,.mp3,.wav,.amv,.mpeg,.mp4,.flv,.avi,.webm,.c,.cpp,.h,.hpp,.java,.py,.js,.ts,.html,.htm,.asp,.css,.scss,.xhtml,.xml,.json,.sql,.bat,.sh,.php,.rb,.swift,.go,.psd,.ai,.eps,.svg,.tiff,.bmp,.3gp,.mkv,.mov,.ogg,.flac,.m4a,.ini,.log,.md,.yml,.yaml,.jsp,.tsx,.jsx"
+                />
 
-            <button
-                type="button"
-                className="absolute inset-y-0 right-1 flex items-center px-2 text-gray-500"
-            >
-                <div className="flex gap-3">
-                    <FaPaperclip
-                        className="w-10 h-10 px-2 py-3 text-[#212529e3] rounded-lg bg-[#e6e6e6c0]"
-                        onClick={handleFileIconClick}
-                    />
-                    {/* <FaMicrophone
+                <button
+                    type="button"
+                    className="absolute inset-y-0 right-1 flex items-center px-2 text-gray-500"
+                >
+                    <div className="flex gap-3">
+                        <FaPaperclip
+                            className="w-10 h-10 px-2 py-3 text-[#212529e3] rounded-lg bg-[#e6e6e6c0]"
+                            onClick={handleFileIconClick}
+                        />
+                        {/* <FaMicrophone
                         className="w-10 h-10 px-2 py-3 text-[#212529e3] rounded-lg bg-[#e6e6e6c0]"
                     /> */}
-                    <AudioRecorder
-                        onRecordingComplete={addAudioElement}
-                        audioTrackConstraints={{
-                            noiseSuppression: true,
-                            echoCancellation: true,
-                        }}
-                        showVisualizer
-                        // downloadOnSavePress={true}
-                        downloadFileExtension="webm"
-                    // className="w-10 h-10 px-2 py-3 text-[#212529e3] rounded-lg bg-[#e6e6e6c0]"
-                    />
-                    <BsFillSendFill
-                        onClick={handleSendMessage}
-                        className="w-10 h-10 px-2 py-3 text-white rounded-lg bg-[#269A54]"
-                    />
-                </div>
-            </button>
-            {/* <iframe
+                        <AudioRecorder
+                            onRecordingComplete={addAudioElement}
+                            onNotAllowedOrFound={() => toast.error("No audio device found.", { duration: 700, position: "bottom-right", style: { marginBottom: "100px" } })}
+                            audioTrackConstraints={{
+                                noiseSuppression: true,
+                                echoCancellation: true,
+
+                            }}
+
+                            showVisualizer
+                            // downloadOnSavePress={true}
+                            downloadFileExtension="webm"
+                        // className="w-10 h-10 px-2 py-3 text-[#212529e3] rounded-lg bg-[#e6e6e6c0]"
+                        />
+                        <BsFillSendFill
+                            onClick={handleSendMessage}
+                            className="w-10 h-10 px-2 py-3 text-white rounded-lg bg-[#269A54]"
+                        />
+                    </div>
+                </button>
+                {/* <iframe
                         src={`http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718421621/epiexjyild7npgsfuszu.pdf`}
                       className="bg-red-200" 
                     /> */}
 
 
-            <div>
-                {/* <FaFileAlt /> */}
-                {/* http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718423938/ugn6sqmhi3hqmchk88mn.zip */}
-                {/* <button className="p-5 btn" onClick={()=>downloadFileAtURL("http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718430078/np98pdltouyf6jhmeqvt.html")}>Download Rar</button>
+                <div>
+                    {/* <FaFileAlt /> */}
+                    {/* http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718423938/ugn6sqmhi3hqmchk88mn.zip */}
+                    {/* <button className="p-5 btn" onClick={()=>downloadFileAtURL("http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718430078/np98pdltouyf6jhmeqvt.html")}>Download Rar</button>
                 <button className="p-5 btn" onClick={downloadFile}>Download  2</button> */}
-            </div>
+                </div>
 
 
 
@@ -263,7 +280,7 @@ const MessageInput: React.FC = () => {
 
 
 
-            {/*  
+                {/*  
 .txt
 http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718422439/c2knrzl2ggpdlx1z3leq.txt
 
@@ -293,12 +310,13 @@ http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718430539/okahdpxhm3uvtbbzyghi.
 .rar
 http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718430876/xe5nc36zutaufdxy75lj.zip
 */}
-            {/* <iframe
+                {/* <iframe
                         src={`http://res.cloudinary.com/dvmtzwxci/raw/upload/v1718422439/c2knrzl2ggpdlx1z3leq.txt`}
                       className="bg-red-200 w-full" 
                       
                     /> */}
-        </section>
+            </section>
+        </>
     );
 };
 

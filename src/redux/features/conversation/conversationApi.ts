@@ -153,7 +153,7 @@ const conversationApi = baseApi.injectEndpoints({
             query: (data: {
                 payload: {
                     lastMessage: string,
-                    conversationId: string |undefined
+                    conversationId: string | undefined
                     lastMessageType: string
                     fileName?: string
                     fileSize?: string
@@ -177,9 +177,33 @@ const conversationApi = baseApi.injectEndpoints({
 
                         // find conversation
                         const getSelectedConversation = allConversations.find(conversation => conversation.id === arg.payload.conversationId)
-
+                        let conversationLastMessage = "";
                         if (getSelectedConversation) {
-                            getSelectedConversation.lastMessage = arg.payload.lastMessage;
+                            if (arg.payload.lastMessageType === "text") {
+                                conversationLastMessage = arg.payload.lastMessage
+                            }
+                            else if (arg.payload.lastMessageType === "voice") {
+                                conversationLastMessage = "Send an voice clip"
+                            }
+                            else if (arg.payload.lastMessageType === "audio") {
+                                conversationLastMessage = "Send an audio file"
+                            }
+                            else if (arg.payload.lastMessageType === "video") {
+                                conversationLastMessage = "Send an video file"
+                            }
+                            else if (arg.payload.lastMessageType === "image") {
+                                conversationLastMessage = "Send an image"
+                            }
+                            else if (
+                                arg.payload.lastMessageType === "web" ||
+                                arg.payload.lastMessageType === "code" ||
+                                arg.payload.lastMessageType === "document" ||
+                                arg.payload.lastMessageType === "archive" ||
+                                arg.payload.lastMessageType === "script" ||
+                                arg.payload.lastMessageType === "data") {
+                                conversationLastMessage = "Send a file"
+                            }
+                            getSelectedConversation.lastMessage = conversationLastMessage;
                             getSelectedConversation.updatedAt = new Date().toISOString();
                             draft.data = allConversations.sort((a, b) =>
                                 new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
@@ -210,7 +234,7 @@ const conversationApi = baseApi.injectEndpoints({
                                 optimisticMessageUpdateInCache.undo()
                                 draft.data.push(res.data.data.message)
                             }
-                          
+
                         }))
                     }
 

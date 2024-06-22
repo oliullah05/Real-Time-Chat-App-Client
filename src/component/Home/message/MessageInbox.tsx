@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { FaFile } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -17,7 +17,6 @@ interface TMessage {
 }
 const MessageInbox = () => {
     const { conversationId } = useParams()
-    const [reload, setReload] = useState(true)
     const { data: myConversations, isLoading } = useGetMyMessagesByConversationIdQuery(conversationId)
 
 
@@ -146,14 +145,14 @@ const MessageInbox = () => {
 
                             {/* for audio  */}
 
-                            {/* {
+                            {
                             (data.type === "audio" || data.type==="voice") && <div className={`max-w-[70%] `}>
                                 <audio className={` 
                                  px-4 py-2 my-5 rounded-lg   ${index % 2 == 0 ? " bg-[#CDCDCD]" : " bg-[#FFFFFF]"}
                                 `} src={data.message} controls></audio>
                             </div>
 
-                            } */}
+                            }
 
                             {/* audio end....
 
