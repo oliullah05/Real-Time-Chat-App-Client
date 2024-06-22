@@ -29,8 +29,8 @@ const MessageInbox = () => {
 
     useEffect(() => {
         scrollToBottom();
-        setReload(!reload)
-    }, [conversationId,reload]);
+
+    }, [conversationId,myConversations]);
 
 
     if (isLoading) {
