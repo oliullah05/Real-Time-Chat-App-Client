@@ -127,14 +127,14 @@ const MessageInbox = () => {
 
                             {/* for image */}
 
-                            {/* 
+                            
                             {
                             data.type === "image" && <div className={`max-w-[70%] `}>
                                 <img className={` glass
-                                 px-4 py-2 my-5 rounded-lg  
+                                 px-4 py-2 my-5 rounded-lg  max-w-96 max-h-96
                                 `} src={data.message} ></img>
                             </div>
-                            } */}
+                            }
 
 
                             {/* for image end */}
@@ -162,13 +162,13 @@ const MessageInbox = () => {
 
                             {/* for video  */}
 
-                            {/* {
+                            {
                             data.type === "video" && <div className={`max-w-[70%] `}>
-                                <video className={` w-96
+                                <video className={` max-w-96 max-h-96
                                  px-4 py-2 my-5 rounded-lg   ${index % 2 == 0 ? " bg-[#CDCDCD]" : " bg-[#FFFFFF]"}
                                 `} src={data.message} controls></video>
                             </div>
-                            } */}
+                            }
 
                             {/* video end */}
 
@@ -184,7 +184,7 @@ const MessageInbox = () => {
                                     data.type == "web" ||
                                     data.type === "data" ||
                                     data.type === "script")
-                                && data.id == "4" &&
+                                 &&
 
 
                                 <div className={`max-w-[70%] `}>

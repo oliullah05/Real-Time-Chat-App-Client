@@ -10,7 +10,81 @@ const MessageInput: React.FC = () => {
     const { conversationId } = useParams()
     const [message, setMessage] = useState("")
     const dispatch = useAppDispatch()
-    const [isVoiceUploading, setIsVoiceUploading] = useState(false)
+    const [isAnyFileUploading, setIsAnyFileUploading] = useState(false)
+
+
+
+
+
+
+    // upload voice messages functions
+    const handleAudioUpload = async (audioFile: File) => {
+        if (audioFile) {
+            setIsAnyFileUploading(true)
+            const data = new FormData();
+            data.append("file", audioFile);
+            data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+            data.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
+
+            // Determine the resource type based on the file type
+
+            try {
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/raw/upload`, {
+                    method: "POST",
+                    body: data
+                });
+
+                const cloudData = await res.json();
+                if (cloudData.url) {
+                    setIsAnyFileUploading(false)
+                    toast.success("Voice Upload Successfully");
+                    const sendMessagePayload = {
+                        payload: {
+                            lastMessage: cloudData?.url,
+                            lastMessageType: "voice",
+                            conversationId
+                        }
+                    }
+                    dispatch(conversationApi.updateConversationThenSlientlyCreateMessage.initiate(sendMessagePayload)).unwrap()
+                } else {
+                    setIsAnyFileUploading(false)
+                    toast.error(cloudData.error.message);
+                }
+            } catch (error) {
+                setIsAnyFileUploading(false)
+            }
+        }
+
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const addAudioElement = (blob: any) => {
+
+        const url = URL.createObjectURL(blob);
+        const audio = document.createElement("audio");
+        audio.className = "hidden"
+        audio.src = url;
+        audio.controls = true;
+        document.body.appendChild(audio);
+
+        // Upload the audio file when recording is complete
+        handleAudioUpload(blob);
+    };
+
+
+    const handleSendMessage = () => {
+        const sendMessagePayload = {
+            payload: {
+                lastMessage: message,
+                lastMessageType: "text",
+                conversationId
+            }
+        }
+        dispatch(conversationApi.updateConversationThenSlientlyCreateMessage.initiate(sendMessagePayload)).unwrap()
+    }
+
+
+
     // upload file functions
     const fileInputRef = useRef<HTMLInputElement>(null);
     const handleFileIconClick = () => {
@@ -95,6 +169,7 @@ const MessageInput: React.FC = () => {
         const files = event.target.files;
 
         if (files && files.length > 0) {
+            setIsAnyFileUploading(true)
             const data = new FormData();
             data.append("file", files[0]);
             data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
@@ -112,6 +187,8 @@ const MessageInput: React.FC = () => {
                 resourceType = 'raw';
             }
 
+
+            // off
             try {
                 const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`, {
                     method: "POST",
@@ -120,97 +197,48 @@ const MessageInput: React.FC = () => {
 
                 const cloudData = await res.json();
                 if (cloudData.url) {
+                    setIsAnyFileUploading(false)
                     const fileUrl = cloudData.url;
                     const fileType = determineFileType(files[0]);
 
-                    // Save the URL and type to your database
-                    // await saveFileDataToDatabase(fileUrl, fileType);
+                    // determine file size
+                    let fileSize = ""
+                    const kilobytes = files[0].size / 1024;
+                    const megabytes = kilobytes / 1024;
 
-                    console.log({ fileUrl, fileType });
+                    if (kilobytes < 1024) {
+                        fileSize = `${kilobytes.toFixed(2)} KB`;
+                    } else {
+                        fileSize = `${megabytes.toFixed(2)} MB`;
+                    }
+
+                    const sendFilesMessagePayload = {
+                        payload: {
+                            lastMessage: fileUrl,
+                            lastMessageType: fileType,
+                            conversationId,
+                            fileName: files[0].name,
+                            fileSize: fileSize
+                        }
+                    }
+                    console.log(sendFilesMessagePayload);
+                    dispatch(conversationApi.updateConversationThenSlientlyCreateMessage.initiate(sendFilesMessagePayload)).unwrap()
+
+                    console.log({ fileUrl, fileType, fileName: files[0].name, fileSize: files[0].size });
                     toast.success("File Upload Successfully");
                 } else {
+                    setIsAnyFileUploading(false)
                     toast.error(cloudData.error.message);
                 }
             } catch (error) {
+                setIsAnyFileUploading(false)
                 console.log(error);
             }
         }
     };
-
-
-
-
-
-    // upload voice messages functions
-    const handleAudioUpload = async (audioFile: File) => {
-        if (audioFile) {
-            setIsVoiceUploading(true)
-            const data = new FormData();
-            data.append("file", audioFile);
-            data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
-            data.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
-
-            // Determine the resource type based on the file type
-
-            try {
-                const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/raw/upload`, {
-                    method: "POST",
-                    body: data
-                });
-
-                const cloudData = await res.json();
-                if (cloudData.url) {
-                    setIsVoiceUploading(false)
-                    toast.success("Voice Upload Successfully");
-                    const sendMessagePayload = {
-                        payload: {
-                            lastMessage: cloudData?.url,
-                            lastMessageType: "voice",
-                            conversationId
-                        }
-                    }
-                    dispatch(conversationApi.updateConversationThenSlientlyCreateMessage.initiate(sendMessagePayload)).unwrap()
-                } else {
-                    setIsVoiceUploading(false)
-                    toast.error(cloudData.error.message);
-                }
-            } catch (error) {
-                setIsVoiceUploading(false)
-            }
-        }
-
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const addAudioElement = (blob: any) => {
-
-        const url = URL.createObjectURL(blob);
-        const audio = document.createElement("audio");
-        audio.className="hidden"
-        audio.src = url;
-        audio.controls = true;
-        document.body.appendChild(audio);
-
-        // Upload the audio file when recording is complete
-        handleAudioUpload(blob);
-    };
-
-
-    const handleSendMessage = () => {
-        const sendMessagePayload = {
-            payload: {
-                lastMessage: message,
-                lastMessageType: "text",
-                conversationId
-            }
-        }
-        dispatch(conversationApi.updateConversationThenSlientlyCreateMessage.initiate(sendMessagePayload)).unwrap()
-    }
-
-
     return (
         <>
-            {isVoiceUploading && <div className="text-center relative"><span className="loading loading-spinner loading-lg absolute -mt-12"></span></div>}
+            {isAnyFileUploading && <div className="text-center relative"><span className="loading loading-spinner loading-lg absolute -mt-12"></span></div>}
             <section className="py-2 relative">
                 <input
                     onChange={(e) => setMessage(e.target.value)}
