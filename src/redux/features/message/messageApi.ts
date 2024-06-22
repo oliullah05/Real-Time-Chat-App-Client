@@ -5,7 +5,7 @@ const messageApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getMyMessagesByConversationId: builder.query({
             query: (conversationId) => ({
-                url: `/message/conversationId/${conversationId}`,
+                url: `/message/conversationId/${conversationId}?limit=500`,
                 method: "GET"
             })
         }),

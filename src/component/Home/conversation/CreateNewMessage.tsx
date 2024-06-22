@@ -22,7 +22,15 @@ const CreateNewMessage = () => {
     const [error, setError] = useState("")
     const dispatch = useAppDispatch()
     const loggedInUser = useCurrentUser()
-  const {conversationId}=useParams()
+    const {conversationId}=useParams()
+
+
+
+
+
+
+
+
 
 
     useEffect(() => {
@@ -92,7 +100,7 @@ const CreateNewMessage = () => {
         // find conversation exits or not
         const payload = {
             lastMessage: message,
-            lastMessageType:"text",
+            lastMessageType: "text",
             participants,
             conversationsUsers: [
                 {
@@ -103,7 +111,7 @@ const CreateNewMessage = () => {
                 },
             ]
         }
-        dispatch(conversationApi.createOrUpdateConversationThenSlientlyCreateMessage.initiate({payload,conversationId})).unwrap().then((res) => {
+        dispatch(conversationApi.createOrUpdateConversationThenSlientlyCreateMessage.initiate({ payload, conversationId })).unwrap().then((res) => {
             if (res.statusCode === 201) {
                 toast.success("Message created successfully")
             }

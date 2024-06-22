@@ -1,10 +1,15 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { AudioRecorder } from "react-audio-voice-recorder";
 import { BsFillSendFill } from "react-icons/bs";
 import { FaPaperclip } from "react-icons/fa6";
+import { useParams } from "react-router-dom";
 import { toast } from "sonner";
+import conversationApi from "../../../redux/features/conversation/conversationApi";
+import { useAppDispatch } from "../../../redux/hooks";
 const MessageInput: React.FC = () => {
-
+    const { conversationId } = useParams()
+    const [message, setMessage] = useState("")
+    const dispatch = useAppDispatch()
 
     // upload file functions
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -179,10 +184,22 @@ const MessageInput: React.FC = () => {
     };
 
 
+    const handleSendMessage = () => {
+        const sendMessagePayload = {
+            payload: {
+                lastMessage: message,
+                lastMessageType: "text",
+                conversationId
+            }
+        }
+        dispatch(conversationApi.updateConversationThenSlientlyCreateMessage.initiate(sendMessagePayload)).unwrap()
+    }
+
 
     return (
         <section className="py-2 relative">
             <input
+                onChange={(e) => setMessage(e.target.value)}
                 type="text"
                 placeholder="Write a message"
                 className="h-[4rem] focus:outline-none rounded-md p-6 w-full bg-[#FFFFFF]"
@@ -221,6 +238,7 @@ const MessageInput: React.FC = () => {
                     // className="w-10 h-10 px-2 py-3 text-[#212529e3] rounded-lg bg-[#e6e6e6c0]"
                     />
                     <BsFillSendFill
+                        onClick={handleSendMessage}
                         className="w-10 h-10 px-2 py-3 text-white rounded-lg bg-[#269A54]"
                     />
                 </div>

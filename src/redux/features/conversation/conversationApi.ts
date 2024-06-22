@@ -88,29 +88,29 @@ const conversationApi = baseApi.injectEndpoints({
                 ))
 
 
-                const optimisticMessageUpdateInCache = dispatch(baseApi.util.updateQueryData("getMyMessagesByConversationId" as never, arg.conversationId as never, (draft: any) => {
-                    const message = arg.payload.lastMessage;
-
-
-                    if (draft) {
-                        draft.data.push({ message, type: "text" })
-                    }
-                }))
+                // const optimisticMessageUpdateInCache = dispatch(baseApi.util.updateQueryData("getMyMessagesByConversationId" as never, arg.conversationId as never, (draft: any) => {
+                //     const message = arg.payload.lastMessage;
+                //     if (draft) {
+                //         draft.data.push({ message, type: "text" })
+                //     }
+                // }))
 
 
                 try {
                     const res: any = await queryFulfilled;
-                    if (res.data.statusCode === 200) {
-                        // update message cache
 
-                        dispatch(baseApi.util.updateQueryData("getMyMessagesByConversationId" as never, arg.conversationId as never, (draft: any) => {
+                    // if (res.data.statusCode === 200) {
+                    //     // update message cache
 
-                            if (draft) {
-                                optimisticMessageUpdateInCache.undo()
-                                draft.data.push(res.data.data.message)
-                            }
-                        }))
-                    }
+                    //     dispatch(baseApi.util.updateQueryData("getMyMessagesByConversationId" as never, arg.conversationId as never, (draft: any) => {
+                    //         console.log(arg);
+
+                    //         if (draft) {
+                    //             // optimisticMessageUpdateInCache.undo()
+                    //             draft.data.push(res.data.data.message)
+                    //         }
+                    //     }))
+                    // }
 
 
 
@@ -120,7 +120,6 @@ const conversationApi = baseApi.injectEndpoints({
                             null as never,
                             (draft: { data: TConversation[] }) => {
                                 // find conversation
-                                console.log(res);
                                 draft.data.push(res.data.data.conversation)
 
                                 draft.data = draft.data.sort((a, b) =>
@@ -132,6 +131,114 @@ const conversationApi = baseApi.injectEndpoints({
                         ))
 
                     }
+
+
+
+                }
+                catch (err) {
+                    cacheUpdateForEditConversation.undo()
+                    // optimisticMessageUpdateInCache.undo()
+                }
+
+
+
+            }
+        },
+        ),
+
+
+
+
+        updateConversationThenSlientlyCreateMessage: builder.mutation({
+            query: (data: {
+                payload: {
+                    lastMessage: string,
+                    conversationId: string |undefined
+                    lastMessageType: string
+                    fileName?: string
+                    fileSize?: string
+                },
+            }) => {
+
+                return {
+                    url: `/conversation/updateConversationThenSlientlyCreateMessage`,
+                    method: "POST",
+                    body: data.payload
+                }
+            },
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                // optimistic chache update 
+
+                const cacheUpdateForEditConversation = dispatch(baseApi.util.updateQueryData(
+                    "getMyConversations" as never,
+                    null as never,
+                    (draft: { data: TConversation[] }) => {
+                        const allConversations: TConversation[] = draft.data;
+
+                        // find conversation
+                        const getSelectedConversation = allConversations.find(conversation => conversation.id === arg.payload.conversationId)
+
+                        if (getSelectedConversation) {
+                            getSelectedConversation.lastMessage = arg.payload.lastMessage;
+                            getSelectedConversation.updatedAt = new Date().toISOString();
+                            draft.data = allConversations.sort((a, b) =>
+                                new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+                            );
+                        }
+
+                    }
+                ))
+
+
+                const optimisticMessageUpdateInCache = dispatch(baseApi.util.updateQueryData("getMyMessagesByConversationId" as never, arg.payload.conversationId as never, (draft: any) => {
+                    const message = arg.payload.lastMessage;
+                    if (draft) {
+                        draft.data.push({ message, type: "text" })
+                    }
+                }))
+
+
+                try {
+                    const res: any = await queryFulfilled;
+                    console.log(res);
+                    console.log(res.data.statusCode);
+                    if (res.data.statusCode === 201) {
+                        // update message cache
+
+                        dispatch(baseApi.util.updateQueryData("getMyMessagesByConversationId" as never, arg.payload.conversationId as never, (draft: any) => {
+                            if (draft) {
+                                optimisticMessageUpdateInCache.undo()
+                                draft.data.push(res.data.data.message)
+                            }
+                          
+                        }))
+                    }
+
+
+
+
+
+
+
+
+
+                    // if (res.data.statusCode === 201) {
+                    //     dispatch(baseApi.util.updateQueryData(
+                    //         "getMyConversations" as never,
+                    //         null as never,
+                    //         (draft: { data: TConversation[] }) => {
+                    //             // find conversation
+                    //             draft.data.push(res.data.data.conversation)
+
+                    //             draft.data = draft.data.sort((a, b) =>
+                    //                 new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+                    //             );
+
+
+                    //         }
+                    //     ))
+
+                    // }
 
 
 
@@ -224,6 +331,7 @@ export const {
     // useGetConversationByParticipantsQuery,
     useCreateOrUpdateConversationThenSlientlyCreateMessageMutation,
     useCreateGroupConversationThenSlientlyCreateMessageMutation,
+    useUpdateConversationThenSlientlyCreateMessageMutation,
     // useUpdateConversationByParticipantsMutation
 } = conversationApi
 
