@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { HiUserGroup } from "react-icons/hi2";
 import { toast } from "sonner";
 import useCurrentUser from "../../../hooks/useCurrentUser";
@@ -9,6 +9,7 @@ import userApi, { useGetUsersWithoutMeForMessageQuery } from "../../../redux/fea
 import { useAppDispatch } from "../../../redux/hooks";
 import UsersInGroupModal from "./UsersInGroupModal";
 import { TUser } from "./conversation.type";
+import { useNavigate } from "react-router-dom";
 
 
 const CreateNewMessage = () => {
@@ -17,6 +18,7 @@ const CreateNewMessage = () => {
     const allUsers: TUser[] = data?.data;
     const [searchTerm, setSearchTerm] = useState("")
     const [isUsersLoading, setIsUsersLoading] = useState(false)
+    const [isMessageSending, setIsMessageSending] = useState(false)
     const [message, setMessage] = useState("")
     const [error, setError] = useState("")
     const [selectedUsersId, setSelectedUsersId] = useState<string[] | []>([])
@@ -25,7 +27,8 @@ const CreateNewMessage = () => {
     const [groupPhoto, setGroupPhoto] = useState<string | null>(null)
     const dispatch = useAppDispatch()
     const loggedInUser = useCurrentUser()
-  
+    const modalCloseButtonRef = useRef<HTMLButtonElement>(null);
+  const navigate = useNavigate()
 
     useEffect(() => {
 
@@ -113,20 +116,26 @@ const CreateNewMessage = () => {
 
 
     const handleCreateMessage = () => {
+       
         setError("")
         if (selectedUsersId.length===0) {
+          
             return setError("Please select some users to start a chat.")
         }
         if (!groupName) {
+       
             return setError("Please enter a valid group name.")
         }
         if (!message) {
+      
             return setError("Please write a message to chat.")
         }
         if (selectedUsersId.length < 2) {
+    
             return setError("Please select at least 2 user to chat")
         }
 
+        setIsMessageSending(true)
 
         const selectedParticipants = selectedUsersId.join('/');
         const participants = `${loggedInUser!.id}/${selectedParticipants}`
@@ -165,11 +174,17 @@ const CreateNewMessage = () => {
 
         dispatch(conversationApi.createGroupConversationThenSlientlyCreateMessage.initiate(payload)).unwrap().then((res:any) => {
             if (res.statusCode === 201) {
+                setIsMessageSending(false)
+                navigate(`/inbox/${res.data.id}`)
+                if(modalCloseButtonRef.current){
+                    modalCloseButtonRef.current.click();
+                }
                 toast.success("Group created successfully")
                 
             }
 
         }).catch((err: any) => {
+            setIsMessageSending(false)
 
             if (!err.data.success) {
                 setError(err.data.message)
@@ -195,7 +210,7 @@ const CreateNewMessage = () => {
                 <div className="modal-box py-4">
                     <form method="dialog" className="flex justify-between items-center p-0 m-0">
                         <input onChange={(e) => setSearchTerm(e.target.value)} type="text" id="text" name="text" className="w-[80%] bg-white rounded-3xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-5 leading-8 transition-colors duration-200 ease-in-out" placeholder="Search user to chat" />
-                        <button className="btn btn-lg btn-circle btn-ghost">✕</button>
+                        <button ref={modalCloseButtonRef} className="btn btn-lg btn-circle btn-ghost">✕</button>
                     </form>
 
                     {!isUsersLoading ?
@@ -239,27 +254,14 @@ const CreateNewMessage = () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                             <div>
                                 <label htmlFor="message" className="leading-7 block  text-gray-600">Message</label>
                                 <textarea onChange={(e) => setMessage(e.target.value)} id="message" name="message" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-15 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out" data-gramm="false" wt-ignore-input="true"></textarea>
                             </div>
                         </div>
                         {error && <p className={`text-center py-3 text-error`}>{error}</p>}
-                        <button disabled={isImgUploadLoading} onClick={handleCreateMessage} className="text-white bg-indigo-500 border-0 mt-2 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">{isImgUploadLoading?"Uploading...":"Send message"}</button>
+                        <button disabled={isImgUploadLoading || isMessageSending} onClick={handleCreateMessage} className="text-white bg-indigo-500 border-0 mt-2 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">{isImgUploadLoading ? "Uploading..." : (isMessageSending ? "Sending..." : "Send Message")}
+                        </button>
                     </section>
 
 

@@ -86,17 +86,16 @@ const CreateNewMessage = () => {
     };
 
     const handleCreateMessage = () => {
-        setIsMessageSending(true)
         setError("")
         if (!selectedUserId) {
-            setIsMessageSending(false)
+            
             return setError("Please select a user to start a chat.")
         }
         if (!message) {
-            setIsMessageSending(false)
+     
             return setError("Please write a message to chat.")
         }
-
+        setIsMessageSending(true)
         const participants = `${loggedInUser?.id}/${selectedUserId}`;
         // find conversation exits or not
         const payload = {
