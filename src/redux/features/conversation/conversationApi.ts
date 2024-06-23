@@ -304,7 +304,7 @@ const conversationApi = baseApi.injectEndpoints({
                         (draft: { data: TConversation[] }) => {
 
                             // find conversation
-                            draft.data.push(res.data.data)
+                            draft.data.push(res.data.data.conversation)
 
                             draft.data = draft.data.sort((a, b) =>
                                 new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()

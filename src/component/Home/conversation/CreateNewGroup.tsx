@@ -175,7 +175,8 @@ const CreateNewMessage = () => {
         dispatch(conversationApi.createGroupConversationThenSlientlyCreateMessage.initiate(payload)).unwrap().then((res:any) => {
             if (res.statusCode === 201) {
                 setIsMessageSending(false)
-                navigate(`/inbox/${res.data.id}`)
+                navigate(`/inbox/${res.data.conversation.id}`)
+                console.log(res);
                 if(modalCloseButtonRef.current){
                     modalCloseButtonRef.current.click();
                 }

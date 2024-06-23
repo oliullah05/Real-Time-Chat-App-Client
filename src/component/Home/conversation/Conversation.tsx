@@ -76,7 +76,7 @@ const Conversation = () => {
                                         }
 
                                         <p className="text-[14px]   ">
-                                            {data.lastMessage.length > 15 ? `${data.lastMessage.slice(0, 15)}...` : data.lastMessage}
+                                            {data?.lastMessage?.length > 15 ? `${data.lastMessage.slice(0, 15)}...` : data.lastMessage}
                                            
                                         </p>
                                     </div>
