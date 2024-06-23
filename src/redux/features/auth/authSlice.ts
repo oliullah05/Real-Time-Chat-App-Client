@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit"
+import { AppDispatch } from "../../store"
+import { baseApi } from "../../api/baseApi"
 
 
 
@@ -23,7 +25,7 @@ const authSlice = createSlice({
     initialState,
     name: "auth",
     reducers: {
-        setUser: (state, action)=>{
+        setUser: (state, action,)=>{
             const {user,token}= action.payload;
             state.user=user,
             state.token=token
@@ -32,6 +34,7 @@ const authSlice = createSlice({
             state.token=null
             state.user=null
             localStorage.removeItem("auth")
+            
         }
     }
 })
@@ -39,6 +42,11 @@ const authSlice = createSlice({
 export const {setUser,logOut} = authSlice.actions
 
 export default authSlice.reducer
+
+export const logOutAndResetApiState = () => (dispatch:AppDispatch) => {
+    dispatch(logOut());
+    dispatch(baseApi.util.resetApiState());
+};
 
 
 

@@ -5,7 +5,7 @@ import { CgProfile } from "react-icons/cg";
 
 
 import { useAppDispatch } from "../../../redux/hooks";
-import { logOut } from "../../../redux/features/auth/authSlice";
+import { logOutAndResetApiState } from "../../../redux/features/auth/authSlice";
 
 
 const Settings = () => {
@@ -14,7 +14,7 @@ const dispatch = useAppDispatch()
 
 
 const handleLogout = ()=>{
-dispatch(logOut())
+dispatch(logOutAndResetApiState())
 }
 
     return (

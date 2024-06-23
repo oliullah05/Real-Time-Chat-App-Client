@@ -1,8 +1,8 @@
-import { ReactNode, useEffect, useState } from "react";
-import { useAppDispatch } from "../redux/hooks";
 import { jwtDecode } from "jwt-decode";
-import { logOut, setUser } from "../redux/features/auth/authSlice";
+import { ReactNode, useEffect, useState } from "react";
 import Loading from "../component/shared/Loading";
+import { logOutAndResetApiState, setUser } from "../redux/features/auth/authSlice";
+import { useAppDispatch } from "../redux/hooks";
 
 
 const AuthPersist = ({ children }: { children: ReactNode }) => {
@@ -26,7 +26,7 @@ const AuthPersist = ({ children }: { children: ReactNode }) => {
 
         else {
             setLoading(false)
-            logOut()
+            logOutAndResetApiState()
         }
     }, [dispatch])
 
