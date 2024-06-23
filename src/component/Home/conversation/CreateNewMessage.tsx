@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TbMessageShare } from "react-icons/tb";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import conversationApi from "../../../redux/features/conversation/conversationApi";
 import userApi, { useGetUsersWithoutMeForMessageQuery } from "../../../redux/features/user/userApi";
 import { useAppDispatch } from "../../../redux/hooks";
 import { TUser } from "./conversation.type";
-import { useParams } from "react-router-dom";
 
 
 const CreateNewMessage = () => {
@@ -17,17 +17,15 @@ const CreateNewMessage = () => {
     const allUsers: TUser[] = data?.data;
     const [searchTerm, setSearchTerm] = useState("")
     const [isUsersLoading, setIsUsersLoading] = useState(false)
+    const [isMessageSending, setIsMessageSending] = useState(false)
     const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
     const [message, setMessage] = useState("")
     const [error, setError] = useState("")
     const dispatch = useAppDispatch()
     const loggedInUser = useCurrentUser()
-    const {conversationId}=useParams()
-
-
-
-
-
+    const { conversationId } = useParams()
+    const navigate = useNavigate()
+    const modalCloseButtonRef = useRef<HTMLButtonElement>(null);
 
 
 
@@ -88,11 +86,14 @@ const CreateNewMessage = () => {
     };
 
     const handleCreateMessage = () => {
+        setIsMessageSending(true)
         setError("")
         if (!selectedUserId) {
+            setIsMessageSending(false)
             return setError("Please select a user to start a chat.")
         }
         if (!message) {
+            setIsMessageSending(false)
             return setError("Please write a message to chat.")
         }
 
@@ -111,15 +112,31 @@ const CreateNewMessage = () => {
                 },
             ]
         }
-        dispatch(conversationApi.createOrUpdateConversationThenSlientlyCreateMessage.initiate({ payload, conversationId })).unwrap().then((res) => {
+        dispatch(conversationApi.createOrUpdateConversationThenSlientlyCreateMessage.initiate({ payload, conversationId })).unwrap().then((res: any) => {
             if (res.statusCode === 201) {
+                setIsMessageSending(false)
+                
+                navigate(`/inbox/${res.data.conversation.id}`)
+                
+                if(modalCloseButtonRef.current){
+                    modalCloseButtonRef.current.click();
+                   
+                }
                 toast.success("Message created successfully")
             }
             if (res.statusCode === 200) {
+                console.log(res.data.conversation.id);
+                setIsMessageSending(false)
+                navigate(`/inbox/${res.data.conversation.id}`)
+                console.log(55);
+                if(modalCloseButtonRef.current){
+                    modalCloseButtonRef.current.click();
+                }
                 toast.success("Message updated successfully")
             }
 
         }).catch((err: any) => {
+            setIsMessageSending(false)
 
             if (!err.data.success) {
                 setError(err.data.message)
@@ -139,9 +156,9 @@ const CreateNewMessage = () => {
 
             <dialog id="new_message_modal" className="modal">
                 <div className="modal-box py-4">
-                    <form method="dialog" className="flex justify-between items-center p-0 m-0">
-                        <input onChange={(e) => setSearchTerm(e.target.value)} type="text" id="text" name="text" className="w-[80%] bg-white rounded-3xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-5 leading-8 transition-colors duration-200 ease-in-out" placeholder="Search user to chat" />
-                        <button className="btn btn-lg btn-circle btn-ghost">✕</button>
+                    <form  method="dialog" className="flex justify-between items-center p-0 m-0">
+                        <input  onChange={(e) => setSearchTerm(e.target.value)} type="text" id="text" name="text" className="w-[80%] bg-white rounded-3xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-5 leading-8 transition-colors duration-200 ease-in-out" placeholder="Search user to chat" />
+                        <button  ref={modalCloseButtonRef} className="btn btn-lg btn-circle btn-ghost">✕</button>
                     </form>
 
                     {!isUsersLoading ?
@@ -191,7 +208,7 @@ const CreateNewMessage = () => {
                             <textarea required placeholder="Please write a message to send." onChange={(e) => setMessage(e.target.value)} id="message" name="message" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-15 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out" data-gramm="false" wt-ignore-input="true"></textarea>
                         </div>
                         {error && <p className={`text-center py-3 text-error`}>{error}</p>}
-                        <button onClick={handleCreateMessage} className="text-white mt-2 bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Send message </button>
+                        <button onClick={handleCreateMessage} className="text-white mt-2 bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">{isMessageSending ? "Sending..." : "Send message"}</button>
                     </section>
 
 

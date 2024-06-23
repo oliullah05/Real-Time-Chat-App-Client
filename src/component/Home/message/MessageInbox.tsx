@@ -23,11 +23,22 @@ const MessageInbox = () => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'instant' });
+        messagesEndRef.current?.scrollIntoView({ behavior: 'instant' });      
+
+
     };
 
     useEffect(() => {
         scrollToBottom();
+        
+
+    }, [conversationId,myConversations]);
+    useEffect(() => {
+        setTimeout(() => {
+            scrollToBottom();
+            
+        }, 2000);
+        
 
     }, [conversationId,myConversations]);
 
