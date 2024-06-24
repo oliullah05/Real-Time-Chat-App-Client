@@ -34,10 +34,11 @@ const MessageInbox = () => {
 
     }, [conversationId,myConversations]);
     useEffect(() => {
+        
         setTimeout(() => {
             scrollToBottom();
             
-        }, 2000);
+        }, 1000);
         
 
     }, [conversationId,myConversations]);
@@ -107,17 +108,14 @@ const MessageInbox = () => {
 
     return (
 
-        <section className="min-h-[76.5vh] max-h-[76.5vh] overflow-y-auto  overflow-hidden custom-scrollbar mt-4 ">
+        <section className="min-h-[76.5vh] border-t-2 border-[#E1E1E1] max-h-[76.5vh] overflow-y-auto  overflow-hidden custom-scrollbar mt-4 ">
 
             <div className="  mt-5">
 
 
                 {
                     myConversations?.data?.map((data: TMessage, index: number) =>
-                        <section className={` flex  ${index % 2 === 0 ? "justify-end " : " justify-start"} `} >
-                            {/* ${index%2===0?"text-left":"text-right"} */}
-
-
+                        <section key={data.id} className={` flex  ${index % 2 === 0 ? "justify-end " : " justify-start"} `} >
 
 
                             {/* for text message*/}

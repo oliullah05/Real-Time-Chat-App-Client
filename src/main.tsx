@@ -1,31 +1,34 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
+import ReactDOM from 'react-dom/client';
 import {
   RouterProvider,
 } from "react-router-dom";
+import './index.css';
 import router from './routes/routes';
 
-import { Provider } from 'react-redux'
-import { store } from './redux/store';
+import { Provider } from 'react-redux';
 import { Toaster } from 'sonner';
+import { store } from './redux/store';
 import AuthPersist from './routes/AuthPersist';
 
 
-import TimeAgo from 'javascript-time-ago'
+import TimeAgo from 'javascript-time-ago';
 
-import en from 'javascript-time-ago/locale/en'
-import ru from 'javascript-time-ago/locale/ru'
+import en from 'javascript-time-ago/locale/en';
+import ru from 'javascript-time-ago/locale/ru';
+import SocketConnection from './component/socket/SocketConnection';
 
 TimeAgo.addDefaultLocale(en)
 TimeAgo.addLocale(ru)
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  
+  <>
     <Provider store={store}>
       <AuthPersist>
+        {/* <SocketConnection></SocketConnection> */}
         <RouterProvider router={router} />
+        
       </AuthPersist>
       <Toaster duration={2000}/>
     </Provider>
-  </React.StrictMode>,
+  </>,
 )

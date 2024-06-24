@@ -34,7 +34,7 @@ const AuthPersist = ({ children }: { children: ReactNode }) => {
         return <Loading></Loading> 
     }
 
-
+  
     return children
 }
 

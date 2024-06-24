@@ -124,10 +124,10 @@ const CreateNewMessage = () => {
                 toast.success("Message created successfully")
             }
             if (res.statusCode === 200) {
-                console.log(res.data.conversation.id);
+                // console.log(res.data.conversation.id);
                 setIsMessageSending(false)
                 navigate(`/inbox/${res.data.conversation.id}`)
-                console.log(55);
+           
                 if(modalCloseButtonRef.current){
                     modalCloseButtonRef.current.click();
                 }

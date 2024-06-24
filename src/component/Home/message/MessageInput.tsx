@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AudioRecorder } from "react-audio-voice-recorder";
 import { BsFillSendFill } from "react-icons/bs";
 import { FaPaperclip } from "react-icons/fa6";
@@ -73,6 +73,9 @@ const MessageInput: React.FC = () => {
 
 
     const handleSendMessage = () => {
+        if (!message) {
+            return toast.error("Please write a message to chat.", { duration: 1000, position: "top-center" })
+        }
         const sendMessagePayload = {
             payload: {
                 lastMessage: message,
@@ -81,6 +84,7 @@ const MessageInput: React.FC = () => {
             }
         }
         dispatch(conversationApi.updateConversationThenSlientlyCreateMessage.initiate(sendMessagePayload)).unwrap()
+        setMessage("")
     }
 
 
@@ -224,7 +228,7 @@ const MessageInput: React.FC = () => {
                     console.log(sendFilesMessagePayload);
                     dispatch(conversationApi.updateConversationThenSlientlyCreateMessage.initiate(sendFilesMessagePayload)).unwrap()
 
-                    console.log({ fileUrl, fileType, fileName: files[0].name, fileSize: files[0].size });
+                    // console.log({ fileUrl, fileType, fileName: files[0].name, fileSize: files[0].size });
                     toast.success("File Upload Successfully");
                 } else {
                     setIsAnyFileUploading(false)
@@ -236,6 +240,30 @@ const MessageInput: React.FC = () => {
             }
         }
     };
+
+
+
+    useEffect(() => {
+       
+        if (!message) {
+
+            return 
+        }
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Enter') {
+                setMessage("")
+                handleSendMessage();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        
+        // Cleanup the event listener on component unmount
+        return () => {
+            
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [message,conversationId]);
     return (
         <>
             {isAnyFileUploading && <div className="text-center relative"><span className="loading loading-spinner loading-lg absolute -mt-12"></span></div>}
@@ -243,6 +271,7 @@ const MessageInput: React.FC = () => {
                 <input
                     onChange={(e) => setMessage(e.target.value)}
                     type="text"
+                    value={message}
                     placeholder="Write a message"
                     className="h-[4rem] focus:outline-none rounded-md p-6 w-full bg-[#FFFFFF]"
                 />

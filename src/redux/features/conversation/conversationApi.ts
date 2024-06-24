@@ -26,7 +26,21 @@ const conversationApi = baseApi.injectEndpoints({
             query: () => ({
                 url: "/conversation/my-conversations",
                 method: "GET"
-            })
+            }),
+        //     async onCacheEntryAdded(arg, { cacheDataLoaded, cacheEntryRemoved, updateCachedData }) {
+        //         // create socket 
+        //         const socket = io(`${import.meta.env.VITE_SERVER_API}`)
+
+        //         try {
+        //             await cacheDataLoaded
+        //             socket.on("oli", (data) => {
+        //                 console.log(data);
+        //             })
+        //         }
+        //         catch (err) {
+        //             console.log(err);
+        //         }
+        //     }
         }),
         getConversationById: builder.query({
             query: (id) => ({
@@ -224,8 +238,8 @@ const conversationApi = baseApi.injectEndpoints({
 
                 try {
                     const res: any = await queryFulfilled;
-                    console.log(res);
-                    console.log(res.data.statusCode);
+         
+                    // console.log(res.data.statusCode);
                     if (res.data.statusCode === 201) {
                         // update message cache
 

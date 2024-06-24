@@ -19,7 +19,7 @@ const authApi = baseApi.injectEndpoints({
                     }
                 }
                 catch (err) {
-                    console.log(err);
+                    // console.log(err);
                 }
             }
         }),

@@ -176,7 +176,7 @@ const CreateNewMessage = () => {
             if (res.statusCode === 201) {
                 setIsMessageSending(false)
                 navigate(`/inbox/${res.data.conversation.id}`)
-                console.log(res);
+                // console.log(res);
                 if(modalCloseButtonRef.current){
                     modalCloseButtonRef.current.click();
                 }
