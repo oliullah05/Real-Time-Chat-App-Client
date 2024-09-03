@@ -13,8 +13,6 @@ const Register = lazy(() => import("../component/register/register"))
 const ForgotPassword = lazy(() => import("../component/forgotPassword/ForgotPassword"))
 
 
-
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,7 +20,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <p>Please Select a chat</p>
+        element: <p className="">Please Select a chat</p>
       },
       {
         path: "/inbox/:conversationId",

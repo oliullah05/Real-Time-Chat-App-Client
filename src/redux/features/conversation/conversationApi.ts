@@ -102,12 +102,12 @@ const conversationApi = baseApi.injectEndpoints({
                 ))
 
 
-                // const optimisticMessageUpdateInCache = dispatch(baseApi.util.updateQueryData("getMyMessagesByConversationId" as never, arg.conversationId as never, (draft: any) => {
-                //     const message = arg.payload.lastMessage;
-                //     if (draft) {
-                //         draft.data.push({ message, type: "text" })
-                //     }
-                // }))
+                const optimisticMessageUpdateInCache = dispatch(baseApi.util.updateQueryData("getMyMessagesByConversationId" as never, arg.conversationId as never, (draft: any) => {
+                    const message = arg.payload.lastMessage;
+                    if (draft) {
+                        draft.data.push({ message, type: "text" })
+                    }
+                }))
 
 
                 try {
