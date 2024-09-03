@@ -102,6 +102,7 @@ const conversationApi = baseApi.injectEndpoints({
                 ))
 
 
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const optimisticMessageUpdateInCache = dispatch(baseApi.util.updateQueryData("getMyMessagesByConversationId" as never, arg.conversationId as never, (draft: any) => {
                     const message = arg.payload.lastMessage;
                     if (draft) {
