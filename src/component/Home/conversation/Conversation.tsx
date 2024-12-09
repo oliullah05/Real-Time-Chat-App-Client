@@ -79,12 +79,12 @@ const Conversation = () => {
                                     </div>
 
                                     {/* name and last message */}
-                                    <div className="mb-1  ">
+                                    <div className="mb-1  mb-500">      
                                         {
                                             data.isGroup ? <h1 className="text-xl font-semibold">{data.groupName}</h1> : <h1 className="text-xl font-semibold">{data.receiverProfileName}</h1>
                                         }
 
-                                        <p className="text-[14px]   ">
+                                        <p className="text-[14px]  ">
                                             {data?.lastMessage?.length > 15 ? `${data.lastMessage.slice(0, 15)}...` : data.lastMessage}
 
                                         </p>

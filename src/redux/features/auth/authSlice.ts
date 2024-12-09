@@ -3,9 +3,6 @@ import { createSlice } from "@reduxjs/toolkit"
 import { AppDispatch } from "../../store"
 import { baseApi } from "../../api/baseApi"
 
-
-
-
 export type TUser = {
     id: string
     role: string
