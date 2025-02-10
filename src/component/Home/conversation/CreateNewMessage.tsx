@@ -86,6 +86,7 @@ const CreateNewMessage = () => {
     };
 
     const handleCreateMessage = () => {
+      
         setError("")
         if (!selectedUserId) {
             

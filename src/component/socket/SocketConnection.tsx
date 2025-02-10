@@ -1,47 +1,34 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useMemo } from 'react';
-import { io } from 'socket.io-client';
-import { useAppDispatch } from '../../redux/hooks';
-import { baseApi } from '../../redux/api/baseApi';
+import { useEffect } from "react";
 import useCurrentUser from '../../hooks/useCurrentUser';
 import socket from '../../lib/socket';
+import { useAppDispatch } from '../../redux/hooks';
 
 const SocketConnection = () => {
-    const user = useCurrentUser()
-    const dispatch = useAppDispatch()
-
-
-    socket.on("connect", () => {
-        // console.log("socket client connected", socket.id);
-        socket.emit("setActiveUsers", { userId: user!.id, socketId: socket.id, userInfo: user, })
-
-    })
-
-    // socket.on("create-group", (data) => {
-    //     console.log(data.conversation.id);
-    //     dispatch(baseApi.util.updateQueryData("getMyConversations" as never, null as never, (draft: any) => {
-    //        const participents:string = (data.conversation.participants);
-
-    //        if(participents.includes(user!.id)){
-    //            draft.data.push(data.conversation) 
-    //        }
-    //     }))
-    // })
-
-
-    
+    const user = useCurrentUser();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        socket.on("seeActiveUsers", (users) => {
-            console.log(users);
-        })
-    }, [])
+        if (!user) return;
 
-    return (
-        <>
+        socket.connect();
 
-        </>
-    );
+        socket.on("connect", () => {
+            console.log("Socket client connected", socket.id);
+            socket.emit("setActiveUsers", { userId: user.id, socketId: socket.id, userInfo: user });
+
+        });
+
+        // Listening for incoming messages
+        socket.on("sendMessage", (message) => {
+            console.log("Received message:", message);
+        });
+
+        return () => {
+            socket.off("connect");
+        };
+    }, [user]);
+
+    return null;
 };
 
 export default SocketConnection;
